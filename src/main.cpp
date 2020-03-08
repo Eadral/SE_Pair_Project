@@ -6,6 +6,7 @@
 
 
 int main(int argc, char *argv[]) {
+    std::ios_base::sync_with_stdio(false);
     if (argv == nullptr)
         return -1;
     // TODO(zyc): better args handling
