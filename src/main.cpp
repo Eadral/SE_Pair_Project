@@ -17,7 +17,10 @@ int main(int argc, char *argv[]) {
 
     Solver solver(fin, fout);
     const auto err = solver.Solve();
-    if (err) return err;
+    if (err) {
+        std::cerr << ErrorString(err) << endl;
+        exit(err);
+    }
 
     return 0;
 }

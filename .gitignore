@@ -7,3 +7,13 @@ Debug/
 
 bin/input.txt
 bin/output.txt
+*.tlog
+*.obj
+*.log
+*.txt
+*.dll
+*.exp
+*.iobj
+*.ipdb
+*.lib
+*.pch

@@ -32,5 +32,8 @@
     <ClInclude Include="src\circle.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\error.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

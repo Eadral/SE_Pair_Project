@@ -5,4 +5,9 @@
     <LocalDebuggerWorkingDirectory>$(ProjectDir)bin\</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>-i input.txt -o output.txt</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerWorkingDirectory>$(ProjectDir)bin\</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
 </Project>
