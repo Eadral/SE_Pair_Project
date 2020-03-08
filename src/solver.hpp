@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "circle.hpp"
+#include "error.hpp"
 #include "line.hpp"
 #include "point.hpp"
 
@@ -17,6 +18,8 @@ inline double sgn(const double x) {
     return x < 0 ? -1 : 1;
 }
 
+// constexpr int kOptN = 500000;
+constexpr int kMaxN = 5000000;
 
 class Solver {
     istream &in_;
@@ -36,18 +39,19 @@ class Solver {
         :in_(in), out_(out), n_(0), n_line_(0), n_circle_(0) {    }
 
     int Solve() {
-        const auto err = Input();
+        auto err = Input();
         if (err) return err;
 
-        GetPointsInLines();
-        GetPointsInCircles();
-        GetPointsBetweenLinesAndCircles();
+        err = GetPointsInLines();
+        if (err) return err;
+        err = GetPointsInCircles();
+        if (err) return err;
+        err = GetPointsBetweenLinesAndCircles();
+        if (err) return err;
 
-        sort(points_.begin(), points_.end());
-        const auto new_end = unique(points_.begin(), points_.end());
-        const auto unique_number = new_end - points_.begin();
+        Optimize();
 
-        out_ << unique_number << endl;
+        out_ << points_.size() << endl;
 
         return 0;
     }
@@ -75,36 +79,51 @@ class Solver {
                 n_circle_++;
             } break;
             default:
-                return -1;
+                return InvalidInput;
             }
         }
         return 0;
     }
 
-    void GetPointsInLines() {
+    int GetPointsInLines() {
         for (auto i = 0; i < n_line_-1; i++) {
             for (auto j = i+1; j < n_line_; j++) {
                 LineLineIntersect(lines_[i], lines_[j]);
             }
+            if (points_.size() > kMaxN) Optimize();
+            if (points_.size() > kMaxN) return MaxPointsExceed;
         }
+        return 0;
     }
 
 
-    void GetPointsInCircles() {
+    int GetPointsInCircles() {
         for (auto i = 0; i < n_circle_-1; i++) {
             for (auto j = i+1; j < n_circle_; j++) {
                 CircleCircleIntersect(circles_[i], circles_[j]);
             }
+            if (points_.size() > kMaxN) Optimize();
+            if (points_.size() > kMaxN) return MaxPointsExceed;
         }
+        return 0;
     }
 
 
-    void GetPointsBetweenLinesAndCircles() {
+    int GetPointsBetweenLinesAndCircles() {
         for (auto i = 0; i < n_line_; i++) {
             for (auto j = 0; j < n_circle_; j++) {
                 LineCircleIntersect(lines_[i], circles_[j]);
             }
+            if (points_.size() > kMaxN) Optimize();
+            if (points_.size() > kMaxN) return MaxPointsExceed;
         }
+        return 0;
+    }
+
+    void Optimize() {
+        sort(points_.begin(), points_.end());
+        const auto new_end = unique(points_.begin(), points_.end());
+        points_.erase(new_end, points_.end());
     }
 
     void LineLineIntersect(const Line& a, const Line& b) {
