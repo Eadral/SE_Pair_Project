@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "solver.hpp"
+
 using namespace std;
 
 int main(int argc, char **argv)
@@ -12,11 +14,10 @@ int main(int argc, char **argv)
 	ifstream fin(input_filename);
 	ofstream fout(output_filename);
 
-	string test;
+	Solver solver(fin, fout);
+	int err = solver.Solve();
+	if (err) return err;
 
-	fin >> test;
-	fout << test;
-    
 	return 0;
 }
 

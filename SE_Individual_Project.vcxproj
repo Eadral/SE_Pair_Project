@@ -21,6 +21,12 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\circle.hpp" />
+    <ClInclude Include="src\line.hpp" />
+    <ClInclude Include="src\point.hpp" />
+    <ClInclude Include="src\solver.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{49310585-2FFA-4C5E-AF62-48097D565BAA}</ProjectGuid>
