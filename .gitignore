@@ -1,2 +1,9 @@
-.vs
-/Debug
+.vs/
+Debug/
+
+*.pdb
+*.ilk
+*.lastcodeanalysissucceeded
+
+bin/input.txt
+bin/output.txt

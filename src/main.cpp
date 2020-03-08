@@ -1,23 +1,24 @@
+// Copyright 2020 Yucong Zhu
 #include <iostream>
 #include <fstream>
 
 #include "solver.hpp"
 
-using namespace std;
 
-int main(int argc, char **argv)
-{
-	// TODO(zyc): better args handling
-	char* input_filename = argv[2];
-	char* output_filename = argv[4];
-	
-	ifstream fin(input_filename);
-	ofstream fout(output_filename);
+int main(int argc, char *argv[]) {
+    if (argv == nullptr)
+        return -1;
+    // TODO(zyc): better args handling
+    const char* input_filename = argv[2];
+    const char* output_filename = argv[4];
 
-	Solver solver(fin, fout);
-	int err = solver.Solve();
-	if (err) return err;
+    std::ifstream fin(input_filename);
+    std::ofstream fout(output_filename);
 
-	return 0;
+    Solver solver(fin, fout);
+    const auto err = solver.Solve();
+    if (err) return err;
+
+    return 0;
 }
 

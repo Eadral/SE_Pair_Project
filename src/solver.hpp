@@ -1,3 +1,4 @@
+// Copyright 2020 Yucong Zhu
 #pragma once
 #include <iostream>
 #include <vector>
@@ -7,216 +8,207 @@
 #include "line.hpp"
 #include "point.hpp"
 
-using namespace std;
+using std::vector;
+using std::istream;
+using std::ostream;
+using std::endl;
 
-
-double sgn(double x) {
-	return x < 0 ? -1 : 1;
+inline double sgn(const double x) {
+    return x < 0 ? -1 : 1;
 }
 
 
 class Solver {
-	
-	istream &in;
-	ostream &out;
-	
-	int n;
-	int n_line;
-	int n_circle;
+    istream &in_;
+    ostream &out_;
 
-	vector<Line> lines;
-	vector<Circle> circles;
-	vector<Point> points;
+    int n_;
+    int n_line_;
+    int n_circle_;
 
-	
-public:
-	Solver(istream &in, ostream &out) :in(in), out(out) {
-		
-	}
-
-	int Solve() {
-		int err = Input();
-		if (err) return err;
-
-		GetPointsInLines();
-		GetPointsInCircles();
-		GetPointsBetweenLinesAndCircles();
-
-		sort(points.begin(), points.end());
-		auto new_end = unique(points.begin(), points.end());
-		int unique_number = new_end - points.begin();
-
-		// for (auto i = points.begin(); i != new_end; i++) {
-		// 	cerr << i->x << " " << i->y << endl;
-		// }
-		
-		out << unique_number << endl;
-
-		return 0;
-	}
-
-	int Input() {
-		in >> n;
-		n_line = 0;
-		n_circle = 0;
-		int number = n;
-		while (number--) {
-			char type;
-			in >> type;
-
-			switch (type) {
-			case 'L': {
-				int x1, y1, x2, y2;
-				in >> x1 >> y1 >> x2 >> y2;
-				lines.emplace_back(x1, y1, x2, y2);
-				n_line++;
-			} break;
-			case 'C': {
-				int x, y, r;
-				in >> x >> y >> r;
-				circles.emplace_back(x, y, r);
-				n_circle++;
-			} break;
-			default:
-				return -1;
-			}
-		}
-		return 0;
-	}
-
-	void GetPointsInLines() {
-		for (int i = 0; i < n_line-1; i++) {
-			for (int j = i+1; j < n_line; j++) {
-				LineLineIntersect(lines[i], lines[j]);
-			}
-		}
-	}
+    vector<Line> lines_;
+    vector<Circle> circles_;
+    vector<Point> points_;
 
 
-	void GetPointsInCircles() {
-		for (int i = 0; i < n_circle-1; i++) {
-			for (int j = i+1; j < n_circle; j++) {
-				CircleCircleIntersect(circles[i], circles[j]);
-			}
-		}
-	}
-	
+ public:
+    Solver(istream &in, ostream &out)
+        :in_(in), out_(out), n_(0), n_line_(0), n_circle_(0) {    }
 
-	void GetPointsBetweenLinesAndCircles() {
-		for (int i = 0; i < n_line; i++) {
-			for (int j = 0; j < n_circle; j++) {
-				LineCircleIntersect(lines[i], circles[j]);
-			}
-		}
-	}
+    int Solve() {
+        const auto err = Input();
+        if (err) return err;
 
-	void LineLineIntersect(const Line& a, const Line& b) {
-		// TODO(zyc): overflow
-		int64_t deno = (a.x1 - a.x2) * (b.y1 - b.y2) - (b.x1 - b.x2) * (a.y1 - a.y2);
-		if (deno == 0) {
-			return;
-		}
-		int64_t x_numer = a.x1 * (a.y2 * (b.x1 - b.x2) + b.x2 * b.y1 - b.x1 * b.y2) +
-			a.x2 * (a.y1 * (-b.x1 + b.x2) - b.x2 * b.y1 + b.x1 * b.y2);
-		int64_t y_numer = a.x1 * a.y2 * (b.y1 - b.y2) +
-			a.x2 * a.y1*(-b.y1 + b.y2) + (a.y1 - a.y2) *(b.x2 * b.y1 - b.x1 * b.y2);
+        GetPointsInLines();
+        GetPointsInCircles();
+        GetPointsBetweenLinesAndCircles();
 
-		double d_deno = (double)deno;
-		double d_x_numer = (double)x_numer;
-		double d_y_numer = (double)y_numer;
+        sort(points_.begin(), points_.end());
+        const auto new_end = unique(points_.begin(), points_.end());
+        const auto unique_number = new_end - points_.begin();
 
-		double x = d_x_numer / d_deno;
-		double y = d_y_numer / d_deno;
+        out_ << unique_number << endl;
 
-		points.emplace_back(x, y);
-		
-	}
+        return 0;
+    }
 
-	void CircleCircleIntersect(const Circle& a, const Circle& b) {
-		// TODO(zyc): optimize
-		double r1 = a.r;
-		double r2 = b.r;
-		double x1 = a.x;
-		double x2 = b.x;
-		double y1 = a.y;
-		double y2 = b.y;
-		
-		double dx = b.x - a.x;
-		double dy = b.y - a.y;
-		double lr = r1 + b.r;
-		double dr = abs(r1 - b.r);
-		double d = sqrt(dx * dx + dy * dy);
-		
-		if (d - lr <= eps && d - dr > eps) {
-			double p = (r1 + b.r + d) / 2;
-			double h = (2 / d) * sqrt(p * (p - r1) * (p - b.r) * (p - d));
+    int Input() {
+        in_ >> n_;
+        n_line_ = 0;
+        n_circle_ = 0;
+        auto number = n_;
+        while (number--) {
+            char type;
+            in_ >> type;
 
-			double a = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
+            switch (type) {
+            case 'L': {
+                int x1, y1, x2, y2;
+                in_ >> x1 >> y1 >> x2 >> y2;
+                lines_.emplace_back(x1, y1, x2, y2);
+                n_line_++;
+            } break;
+            case 'C': {
+                int x, y, r;
+                in_ >> x >> y >> r;
+                circles_.emplace_back(x, y, r);
+                n_circle_++;
+            } break;
+            default:
+                return -1;
+            }
+        }
+        return 0;
+    }
 
-			double x0 = x1 + (a / d) * (x2 - x1);
-			double y0 = y1 + (a / d) * (y2 - y1);
+    void GetPointsInLines() {
+        for (auto i = 0; i < n_line_-1; i++) {
+            for (auto j = i+1; j < n_line_; j++) {
+                LineLineIntersect(lines_[i], lines_[j]);
+            }
+        }
+    }
 
-			if (h <= eps) {
-				points.emplace_back(x0, y0);
-			} else {
-				double xp = (h / d) * (y2 - y1);
-				double yp = (h / d) * (x2 - x1);
 
-				points.emplace_back(x0 + xp, y0 - yp);
-				points.emplace_back(x0 - xp, y0 + yp);
-			}
-			
-			// if ((ab - lr) < eps) {
-			
-			// }
-		}
-		
+    void GetPointsInCircles() {
+        for (auto i = 0; i < n_circle_-1; i++) {
+            for (auto j = i+1; j < n_circle_; j++) {
+                CircleCircleIntersect(circles_[i], circles_[j]);
+            }
+        }
+    }
 
-		
-	}
-	
-	void LineCircleIntersect(const Line& l, const Circle& c) {
-		// TODO(zyc): overflow
-		int x1 = l.x1 - c.x;
-		int x2 = l.x2 - c.x;
-		int y1 = l.y1 - c.y;
-		int y2 = l.y2 - c.y;
-		int r = c.r;
 
-		double dx = x2 - x1;
-		double dy = y2 - y1;
-		double dr2 = dx * dx + dy * dy;
-		double D = x1 * y2 - x2 * y1;
+    void GetPointsBetweenLinesAndCircles() {
+        for (auto i = 0; i < n_line_; i++) {
+            for (auto j = 0; j < n_circle_; j++) {
+                LineCircleIntersect(lines_[i], circles_[j]);
+            }
+        }
+    }
 
-		double delta = r * r * dr2 - D * D;
-		if (delta < eps) {
+    void LineLineIntersect(const Line& a, const Line& b) {
+        // TODO(zyc): overflow
+        const auto ax1 = static_cast<double>(a.x1);
+        const auto ax2 = static_cast<double>(a.x2);
+        const auto ay1 = static_cast<double>(a.y1);
+        const auto ay2 = static_cast<double>(a.y2);
+        const auto bx1 = static_cast<double>(b.x1);
+        const auto bx2 = static_cast<double>(b.x2);
+        const auto by1 = static_cast<double>(b.y1);
+        const auto by2 = static_cast<double>(b.y2);
+        const auto denominator =
+            (ax1 - ax2) * (by1 - by2) - (bx1 - bx2) * (ay1 - ay2);
+        if (denominator == 0) {
+            return;
+        }
+        const auto x_numerator =
+            ax1 * (ay2 * (bx1 - bx2) + bx2 * by1 - bx1 * by2) +
+            ax2 * (ay1 * (-bx1 + bx2) - bx2 * by1 + bx1 * by2);
+        const auto y_numerator =
+            ax1 * ay2 * (by1 - by2) +
+            ax2 * ay1*(-by1 + by2) + (ay1 - ay2) *(bx2 * by1 - bx1 * by2);
 
-		} else if (abs(delta) <= eps) {
-			double x = (D * dy) / dr2;
-			double y = (-D * dx) / dr2;
-			x += c.x;
-			y += c.y;
-			points.emplace_back(x, y);
-		} else {
-			double sqrt_delta = sqrt(delta);
-			double x_p = sgn(dy) * dx * sqrt_delta;
-			double y_p = abs(dy) * sqrt(delta);
+        auto x = x_numerator / denominator;
+        auto y = y_numerator / denominator;
 
-			double x1 = (D * dy + x_p) / dr2;
-			double x2 = (D * dy - x_p) / dr2;
-			double y1 = (-D * dx + y_p) / dr2;
-			double y2 = (-D * dx - y_p) / dr2;
+        points_.emplace_back(x, y);
+    }
 
-			x1 += c.x;
-			x2 += c.x;
-			y1 += c.y;
-			y2 += c.y;
-			points.emplace_back(x1, y1);
-			points.emplace_back(x2, y2);
-		}
+    void CircleCircleIntersect(const Circle& a, const Circle& b) {
+        // TODO(zyc): optimize
+        const auto r1 = static_cast<double>(a.r);
+        const auto r2 = static_cast<double>(b.r);
+        const auto x1 = static_cast<double>(a.x);
+        const auto x2 = static_cast<double>(b.x);
+        const auto y1 = static_cast<double>(a.y);
+        const auto y2 = static_cast<double>(b.y);
 
-		
-	}
-	
+        const auto dx = x2 - x1;
+        const auto dy = y2 - y1;
+        const auto lr = r1 + r2;
+        const auto dr = abs(r1 - r2);
+        const auto d = sqrt(dx * dx + dy * dy);
+
+        if (d - lr <= kEps && d - dr > kEps) {
+            const auto p = (r1 + r2 + d) / 2;
+            const auto h = (2 / d) * sqrt(p * (p - r1) * (p - r2) * (p - d));
+
+            const auto va = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
+
+            auto x0 = x1 + (va / d) * (x2 - x1);
+            auto y0 = y1 + (va / d) * (y2 - y1);
+
+            if (h <= kEps) {
+                points_.emplace_back(x0, y0);
+            } else {
+                const auto xp = (h / d) * (y2 - y1);
+                const auto yp = (h / d) * (x2 - x1);
+
+                points_.emplace_back(x0 + xp, y0 - yp);
+                points_.emplace_back(x0 - xp, y0 + yp);
+            }
+        }
+    }
+
+    void LineCircleIntersect(const Line& l, const Circle& c) {
+        // TODO(zyc): overflow
+        const auto x1 = static_cast<double>(l.x1) - static_cast<double>(c.x);
+        const auto x2 = static_cast<double>(l.x2) - static_cast<double>(c.x);
+        const auto y1 = static_cast<double>(l.y1) - static_cast<double>(c.y);
+        const auto y2 = static_cast<double>(l.y2) - static_cast<double>(c.y);
+        const auto r = static_cast<double>(c.r);
+
+        const auto dx = x2 - x1;
+        const auto dy = y2 - y1;
+        const auto dr2 = dx * dx + dy * dy;
+        const auto d = x1 * y2 - x2 * y1;
+
+        const auto delta = r * r * dr2 - d * d;
+        if (delta < kEps) {
+        } else if (abs(delta) <= kEps) {
+            auto x = (d * dy) / dr2;
+            auto y = (-d * dx) / dr2;
+            x += c.x;
+            y += c.y;
+            points_.emplace_back(x, y);
+        } else {
+            const auto sqrt_delta = sqrt(delta);
+            const auto x_p = sgn(dy) * dx * sqrt_delta;
+            const auto y_p = abs(dy) * sqrt(delta);
+
+            auto xc = (d * dy + x_p) / dr2;
+            auto xd = (d * dy - x_p) / dr2;
+            auto yc = (-d * dx + y_p) / dr2;
+            auto yd = (-d * dx - y_p) / dr2;
+
+            xc += c.x;
+            xd += c.x;
+            yc += c.y;
+            yd += c.y;
+            points_.emplace_back(xc, yc);
+            points_.emplace_back(xd, yd);
+        }
+    }
 };
 
