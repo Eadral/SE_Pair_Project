@@ -30,7 +30,7 @@ class Solver {
 
 	
 public:
-	Solver(istream& in, ostream& out) :in(in), out(out) {
+	Solver(istream &in, ostream &out) :in(in), out(out) {
 		
 	}
 
