@@ -8,6 +8,9 @@
 #define PCH_H
 
 // add headers that you want to pre-compile here
-
+#include "../src/line.hpp"
+#include "../src/circle.hpp"
+#include "../src/point.hpp"
+#include "../src/solver.hpp"
 
 #endif //PCH_H

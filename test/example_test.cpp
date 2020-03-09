@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
-#include "../src/line.hpp"
-#include "../src/circle.hpp"
-#include "../src/point.hpp"
-#include "../src/solver.hpp"
-
 #include <sstream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -13,11 +8,11 @@ using namespace std;
 
 namespace UnitTest
 {
-	TEST_CLASS(SimpleTest)
+	TEST_CLASS(ExampleTest)
 	{
 	public:
 
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(Test1)
 		{
 			stringstream sin;
 			stringstream sout;
@@ -36,7 +31,7 @@ L 0 0 1 1
 
 			Assert::AreEqual(0, ans);
 		}
-		TEST_METHOD(TestMethod2)
+		TEST_METHOD(Test2)
 		{
 			stringstream sin;
 			stringstream sout;
@@ -57,7 +52,7 @@ L 1 2 2 0
 
 			Assert::AreEqual(3, ans);
 		}
-		TEST_METHOD(TestMethod3)
+		TEST_METHOD(Test3)
 		{
 			stringstream sin;
 			stringstream sout;
@@ -78,7 +73,7 @@ L 0 0 -1 0
 
 			Assert::AreEqual(1, ans);
 		}
-		TEST_METHOD(TestMethod4)
+		TEST_METHOD(Test4)
 		{
 			stringstream sin;
 			stringstream sout;

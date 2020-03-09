@@ -49,11 +49,14 @@ class Solver {
         err = GetPointsBetweenLinesAndCircles();
         if (err) return err;
 
-        Optimize();
-
-        out_ << points_.size() << endl;
+        out_ << GetAns() << endl;
 
         return 0;
+    }
+
+    int GetAns() {
+        Optimize();
+        return points_.size();
     }
 
     int Input() {
