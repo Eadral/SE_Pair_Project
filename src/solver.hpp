@@ -169,7 +169,7 @@ class Solver {
         const auto dr = abs(r1 - r2);
         const auto d = sqrt(dx * dx + dy * dy);
 
-        if (d - lr <= kEps && d - dr > kEps) {
+        if (d - lr <= kEps && d - dr >= -kEps) {
             const auto p = (r1 + r2 + d) / 2;
             const auto h = (2 / d) * sqrt(p * (p - r1) * (p - r2) * (p - d));
 
@@ -204,7 +204,7 @@ class Solver {
         const auto d = x1 * y2 - x2 * y1;
 
         const auto delta = r * r * dr2 - d * d;
-        if (delta < kEps) {
+        if (delta < -kEps) {
         } else if (abs(delta) <= kEps) {
             auto x = (d * dy) / dr2;
             auto y = (-d * dx) / dr2;
