@@ -132,35 +132,24 @@ class Solver {
     }
 
     void LineLineIntersect(const Line& a, const Line& b) {
-        // TODO(zyc): overflow
-        const auto ax1 = static_cast<double>(a.x1);
-        const auto ax2 = static_cast<double>(a.x2);
-        const auto ay1 = static_cast<double>(a.y1);
-        const auto ay2 = static_cast<double>(a.y2);
-        const auto bx1 = static_cast<double>(b.x1);
-        const auto bx2 = static_cast<double>(b.x2);
-        const auto by1 = static_cast<double>(b.y1);
-        const auto by2 = static_cast<double>(b.y2);
         const auto denominator =
-            (ax1 - ax2) * (by1 - by2) - (bx1 - bx2) * (ay1 - ay2);
+            a.dx * b.dy - b.dx * a.dy;
         if (denominator == 0) {
             return;
         }
         const auto x_numerator =
-            ax1 * (ay2 * (bx1 - bx2) + bx2 * by1 - bx1 * by2) +
-            ax2 * (ay1 * (-bx1 + bx2) - bx2 * by1 + bx1 * by2);
-        const auto y_numerator =
-            ax1 * ay2 * (by1 - by2) +
-            ax2 * ay1*(-by1 + by2) + (ay1 - ay2) *(bx2 * by1 - bx1 * by2);
+            a.x1 * (a.y2 * b.dx + b.x2y1_x1y2) +
+            a.x2 * (a.y1 * -b.dx - b.x2y1_x1y2);
+        const auto y_numerator = (b.dy) * (-a.x2y1_x1y2)
+            + (a.dy) *(b.x2y1_x1y2);
 
-        auto x = x_numerator / denominator;
-        auto y = y_numerator / denominator;
+        auto x = (double)x_numerator / denominator;
+        auto y = (double)y_numerator / denominator;
 
         points_.emplace_back(x, y);
     }
 
     void CircleCircleIntersect(const Circle& a, const Circle& b) {
-        // TODO(zyc): optimize
         const auto r1 = static_cast<double>(a.r);
         const auto r2 = static_cast<double>(b.r);
         const auto x1 = static_cast<double>(a.x);
@@ -196,7 +185,6 @@ class Solver {
     }
 
     void LineCircleIntersect(const Line& l, const Circle& c) {
-        // TODO(zyc): overflow
         const auto x1 = static_cast<double>(l.x1) - static_cast<double>(c.x);
         const auto x2 = static_cast<double>(l.x2) - static_cast<double>(c.x);
         const auto y1 = static_cast<double>(l.y1) - static_cast<double>(c.y);

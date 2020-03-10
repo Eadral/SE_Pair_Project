@@ -8,7 +8,6 @@ struct Point {
     double x, y;
     Point(const double x, const double y) noexcept : x(x), y(y) {}
 
-    // TODO(zyc): optimize
     friend bool operator<(const Point& lhs, const Point& rhs) noexcept {
         if (lhs == rhs)
             return false;
