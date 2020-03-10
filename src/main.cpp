@@ -4,8 +4,7 @@
 
 #include "solver.hpp"
 
-
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) [[gsl::suppress(bounds, lifetime)]] {
     std::ios_base::sync_with_stdio(false);
 
     if (argv == nullptr)

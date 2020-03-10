@@ -9,7 +9,7 @@ struct Point {
     Point(const double x, const double y) noexcept : x(x), y(y) {}
 
     // TODO(zyc): optimize
-    friend bool operator<(const Point& lhs, const Point& rhs) {
+    friend bool operator<(const Point& lhs, const Point& rhs) noexcept {
         if (lhs == rhs)
             return false;
         if (abs(lhs.x - rhs.x) <= kEps)

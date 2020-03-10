@@ -14,7 +14,7 @@ using std::istream;
 using std::ostream;
 using std::endl;
 
-inline double sgn(const double x) {
+inline constexpr double sgn(const double x) {
     return x < 0 ? -1 : 1;
 }
 
@@ -35,7 +35,7 @@ class Solver {
 
 
  public:
-    Solver(istream &in, ostream &out)
+    Solver(istream &in, ostream &out) noexcept
         :in_(in), out_(out), n_(0), n_line_(0), n_circle_(0) {    }
 
     int Solve() {
@@ -56,7 +56,7 @@ class Solver {
 
     int GetAns() {
         Optimize();
-        return points_.size();
+        return static_cast<int>(points_.size());
     }
 
     int Input() {
@@ -91,7 +91,7 @@ class Solver {
     int GetPointsInLines() {
         for (auto i = 0; i < n_line_-1; i++) {
             for (auto j = i+1; j < n_line_; j++) {
-                LineLineIntersect(lines_[i], lines_[j]);
+                LineLineIntersect(lines_.at(i), lines_.at(j));
             }
             if (points_.size() > kMaxN) Optimize();
             if (points_.size() > kMaxN) return MaxPointsExceed;
@@ -103,7 +103,7 @@ class Solver {
     int GetPointsInCircles() {
         for (auto i = 0; i < n_circle_-1; i++) {
             for (auto j = i+1; j < n_circle_; j++) {
-                CircleCircleIntersect(circles_[i], circles_[j]);
+                CircleCircleIntersect(circles_.at(i), circles_.at(j));
             }
             if (points_.size() > kMaxN) Optimize();
             if (points_.size() > kMaxN) return MaxPointsExceed;
@@ -115,7 +115,7 @@ class Solver {
     int GetPointsBetweenLinesAndCircles() {
         for (auto i = 0; i < n_line_; i++) {
             for (auto j = 0; j < n_circle_; j++) {
-                LineCircleIntersect(lines_[i], circles_[j]);
+                LineCircleIntersect(lines_.at(i), circles_.at(j));
             }
             if (points_.size() > kMaxN) Optimize();
             if (points_.size() > kMaxN) return MaxPointsExceed;

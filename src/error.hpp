@@ -11,4 +11,5 @@ std::string ErrorString(int err_code) {
     case MaxPointsExceed: return "MaxPointsExceed";
     case InvalidInput: return "InvalidInput";
     }
+    return "NoError";
 }
