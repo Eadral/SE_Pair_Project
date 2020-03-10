@@ -2,7 +2,7 @@
 #pragma once
 #include <tuple>
 
-double constexpr kEps = 1e-12;
+double constexpr kEps = 1e-10;
 
 struct Point {
     double x, y;
