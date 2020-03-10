@@ -19,7 +19,7 @@ inline constexpr double sgn(const double x) {
 }
 
 // constexpr int kOptN = 500000;
-constexpr int kMaxN = 5000000;
+//constexpr int kMaxN_ = 5000000;
 
 class Solver {
     istream &in_;
@@ -29,14 +29,16 @@ class Solver {
     int n_line_;
     int n_circle_;
 
+    const int kMaxN_;
+
     vector<Line> lines_;
     vector<Circle> circles_;
     vector<Point> points_;
 
 
  public:
-    Solver(istream &in, ostream &out) noexcept
-        :in_(in), out_(out), n_(0), n_line_(0), n_circle_(0) {    }
+    Solver(istream &in, ostream &out, const int kMaxN_ = 5000000) noexcept
+        :in_(in), out_(out), n_(0), n_line_(0), n_circle_(0), kMaxN_(kMaxN_) {    }
 
     int Solve() {
         auto err = Input();
@@ -93,8 +95,8 @@ class Solver {
             for (auto j = i+1; j < n_line_; j++) {
                 LineLineIntersect(lines_.at(i), lines_.at(j));
             }
-            if (points_.size() > kMaxN) Optimize();
-            if (points_.size() > kMaxN) return MaxPointsExceed;
+            if (points_.size() > kMaxN_) Optimize();
+            if (points_.size() > kMaxN_) return MaxPointsExceed;
         }
         return 0;
     }
@@ -105,8 +107,8 @@ class Solver {
             for (auto j = i+1; j < n_circle_; j++) {
                 CircleCircleIntersect(circles_.at(i), circles_.at(j));
             }
-            if (points_.size() > kMaxN) Optimize();
-            if (points_.size() > kMaxN) return MaxPointsExceed;
+            if (points_.size() > kMaxN_) Optimize();
+            if (points_.size() > kMaxN_) return MaxPointsExceed;
         }
         return 0;
     }
@@ -117,8 +119,8 @@ class Solver {
             for (auto j = 0; j < n_circle_; j++) {
                 LineCircleIntersect(lines_.at(i), circles_.at(j));
             }
-            if (points_.size() > kMaxN) Optimize();
-            if (points_.size() > kMaxN) return MaxPointsExceed;
+            if (points_.size() > kMaxN_) Optimize();
+            if (points_.size() > kMaxN_) return MaxPointsExceed;
         }
         return 0;
     }

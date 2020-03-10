@@ -240,6 +240,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="circle_circle_intersection_test.cpp" />
+    <ClCompile Include="error_test.cpp" />
     <ClCompile Include="line_circle_intersection_test.cpp" />
     <ClCompile Include="line_line_intersection_test.cpp" />
     <ClCompile Include="pch.cpp">

@@ -41,6 +41,26 @@ namespace UnitTest
 
 			Assert::AreEqual(solver.GetAns(), 0);
 		}
+
+		TEST_METHOD(FourLines)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			solver.LineLineIntersect(
+				Line(0, 0, 1, 0),
+				Line(0, 0, 0, 1)
+			);
+
+			solver.LineLineIntersect(
+				Line(0, 1, 1, 1),
+				Line(0, 0, 0, 1)
+			);
+
+			Assert::AreEqual(solver.GetAns(), 2);
+		}
 		
 	};
 }
