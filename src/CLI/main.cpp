@@ -2,14 +2,14 @@
 #include <iostream>
 #include <fstream>
 
-#include "solver.hpp"
+#include "../../src/Core/solver.h"
 
 int main(int argc, char* argv[]) {
     std::ios_base::sync_with_stdio(false);
-
+    
     if (argv == nullptr)
         return -1;
-
+    
     std::string input_filename;
     std::string output_filename;
     for (int i = 0; i < argc-1; i++) {
@@ -22,17 +22,17 @@ int main(int argc, char* argv[]) {
         std::cout << "Usage: intersect.exe -i input.txt -o output.txt" << std::endl;
         return -1;
     }
-
+    
     std::ifstream fin(input_filename);
     std::ofstream fout(output_filename);
-
+    
     Solver solver(fin, fout);
     const auto err = solver.Solve();
     if (err) {
         std::cerr << ErrorString(err) << endl;
         exit(err);
     }
-
+    
     return 0;
 }
 

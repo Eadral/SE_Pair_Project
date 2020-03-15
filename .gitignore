@@ -17,3 +17,9 @@ bin/output.txt
 *.ipdb
 *.lib
 *.pch
+/.gitattributes
+/.opencppcov/SE_Individual_Project/*.json
+/TestResults/04ae8d5e-a0bb-4eb3-8c9f-7a28e2068a98/*.coverage
+*.coverage
+/test/.opencppcov/UnitTest/*.json
+*.sarif
