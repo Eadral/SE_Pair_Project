@@ -1,4 +1,4 @@
-# Software Engineering  Course - Individual Project
+# Software Engineering  Course - Pair Project
 
 [Homework Page](https://edu.cnblogs.com/campus/buaa/BUAA_SE_2020_LJ/homework/10429) 
 
