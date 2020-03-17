@@ -6,6 +6,7 @@
 
 #include "circle.hpp"
 #include "error.hpp"
+#include "exception.hpp"
 #include "line.hpp"
 #include "point.hpp"
 
@@ -14,6 +15,7 @@
 using std::vector;
 using std::istream;
 using std::ostream;
+using std::string;
 using std::endl;
 
 inline constexpr double sgn(const double x) {

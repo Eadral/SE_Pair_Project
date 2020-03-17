@@ -1,18 +1,22 @@
 #include "solver.h"
 
 inline int Solver::Solve() {
-    auto err = Input();
-    if (err) return err;
+    try {
+        auto err = Input();
+        if (err) return err;
 
-    err = GetPointsInLines();
-    if (err) return err;
-    err = GetPointsInCircles();
-    if (err) return err;
-    err = GetPointsBetweenLinesAndCircles();
-    if (err) return err;
-
-    out_ << GetAns() << endl;
-
+        err = GetPointsInLines();
+        if (err) return err;
+        err = GetPointsInCircles();
+        if (err) return err;
+        err = GetPointsBetweenLinesAndCircles();
+        if (err) return err;
+        out_ << GetAns() << endl;
+    }
+    catch (CoreException e) {
+        std::cout << e.showExceptionMessage() << endl;
+        return InvalidInput;
+    }   
     return 0;
 }
 
@@ -22,33 +26,86 @@ inline int Solver::GetAns() {
 }
 
 inline int Solver::Input() {
-    in_ >> n_;
+    string line_;
+    getline(in_, line_);
+    std::cout << line_ << endl;
+    if (!isDegital(line_)) {
+        throw CoreException(WrongFormatOfN);
+        return InvalidInput;
+    }
+    n_ = stoi(line_);
+    if (n_ <= 0) {
+        throw CoreException(InvalidValueOfN);
+        return InvalidInput;
+    }
     n_line_ = 0;
     n_circle_ = 0;
     auto number = n_;
-    while (number--) {
-        char type;
-        in_ >> type;
-
+    while (getline(in_, line_)) {
+        char type = line_.at(0);
         switch (type) {
-        case 'L': {
-            int x1, y1, x2, y2;
-            in_ >> x1 >> y1 >> x2 >> y2;
-            lines_.emplace_back(x1, y1, x2, y2);
-            n_line_++;
+            case 'L': {
+                vector<int> para = readPara(4, line_);
+                checkPara(para);
+                lines_.emplace_back(para.at(0), para.at(1), para.at(2), para.at(3));
+                n_line_++;
+            }
+                    break;
+            case 'R': {
+                //int x1, y1, x2, y2;
+                //
+                //lines_.emplace_back(x1, y1, x2, y2);
+                //n_line_++;
+            }
+                    break;
+            case 'S': {
+                //int x1, y1, x2, y2;
+                //
+                //lines_.emplace_back(x1, y1, x2, y2);
+                //n_line_++;
+            }
+                    break;
+            case 'C': {
+                vector<int> para = readPara(3, line_);
+                checkPara(para);
+                circles_.emplace_back(para.at(0), para.at(1), para.at(2));
+                n_circle_++;
+            }
+                    break;
+            default:
+                throw CoreException(WrongFormatOfObjectIdentifier);
         }
-                break;
-        case 'C': {
-            int x, y, r;
-            in_ >> x >> y >> r;
-            circles_.emplace_back(x, y, r);
-            n_circle_++;
-        }
-                break;
-        default:
-            return InvalidInput;
-        }
+        n_--;
     }
+    if (n_ > 0) {
+        throw CoreException(ObjectInputTooLittle);
+    }
+    else if (n_ < 0) {
+        throw CoreException(ObjectInputTooMuch);
+    }
+    //while (number--) {
+    //    char type;
+    //    in_ >> type;
+
+    //    switch (type) {
+        //case 'L': {
+        //    int x1, y1, x2, y2;
+        //    in_ >> x1 >> y1 >> x2 >> y2;
+        //    lines_.emplace_back(x1, y1, x2, y2);
+        //    n_line_++;
+        //}
+        //        break;
+        //case 'C': {
+        //    int x, y, r;
+        //    in_ >> x >> y >> r;
+        //    circles_.emplace_back(x, y, r);
+        //    n_circle_++;
+        //}
+        //        break;
+        //default:
+        //    return InvalidInput;
+        //}
+    //}
     return 0;
 }
 
@@ -95,6 +152,9 @@ inline void Solver::LineLineIntersect(const Line& a, const Line& b) {
     const auto denominator =
         a.dx * b.dy - b.dx * a.dy;
     if (denominator == 0) {
+        if (a.x2y1_x1y2 - b.x2y1_x1y2 == 0) {
+            throw CoreException(InfiniteIntersectionsFound);
+        }
         return;
     }
     const auto x_numerator =
@@ -122,6 +182,10 @@ inline void Solver::CircleCircleIntersect(const Circle& a, const Circle& b) {
     const auto lr = r1 + r2;
     const auto dr = abs(r1 - r2);
     const auto d = sqrt(dx * dx + dy * dy);
+
+    if (dx == 0 && dy == 0 && r1 == r2) {
+        throw CoreException(InfiniteIntersectionsFound);
+    }
 
     if (d - lr <= kEps && d - dr >= -kEps) {
         const auto p = (r1 + r2 + d) / 2;

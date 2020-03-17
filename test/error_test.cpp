@@ -86,6 +86,5 @@ C -1 0 1
 
 			Assert::AreEqual((int)MaxPointsExceed, ret);
 		}
-
 	};
 }

@@ -33,10 +33,19 @@
     <ClInclude Include="circle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="exception.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="solver.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ray.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="section.hpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

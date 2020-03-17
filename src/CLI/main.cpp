@@ -25,6 +25,9 @@ int main(int argc, char* argv[]) {
     
     std::ifstream fin(input_filename);
     std::ofstream fout(output_filename);
+    if (!fin.is_open()) {
+        exit(-9);
+    }
     
     Solver solver(fin, fout);
     const auto err = solver.Solve();

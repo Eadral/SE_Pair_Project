@@ -21,12 +21,15 @@
   <ItemGroup>
     <ClInclude Include="circle.hpp" />
     <ClInclude Include="error.hpp" />
+    <ClInclude Include="exception.hpp" />
     <ClInclude Include="intersect_dll.h" />
     <ClInclude Include="line.hpp" />
     <ClInclude Include="point.hpp" />
     <ClInclude Include="solver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ray.hpp" />
+    <ClCompile Include="section.hpp" />
     <ClCompile Include="solver.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -131,7 +134,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;CORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
