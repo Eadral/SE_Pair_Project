@@ -102,7 +102,7 @@ inline int Solver::Input() {
     return 0;
 }
 
-inline bool Solver::PointOnRay(const double& x, const double& y, const Ray& r) {  
+inline bool Solver::PointOnRay(const double& x, const double& y, const Ray& r) {
     if (r.dx < 0) {
         return x <= static_cast<double>(r.x1);
     }

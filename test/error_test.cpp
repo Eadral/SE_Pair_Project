@@ -19,10 +19,8 @@ namespace UnitTest
 
 			Solver solver(sin, sout);
 
-			sin << R"(
-1
-X 0 0 1 1
-			)" << endl;
+			sin << R"(1
+X 0 0 1 1)" << endl;
 
 			int ret = solver.Solve();
 
@@ -36,13 +34,11 @@ X 0 0 1 1
 
 			Solver solver(sin, sout, 2);
 
-			sin << R"(
-4
+			sin << R"(4
 L 0 0 0 1
 L 0 0 1 0
 L 1 0 1 1
-L 0 1 1 1
-			)" << endl;
+L 0 1 1 1)" << endl;
 
 			int ret = solver.Solve();
 
@@ -56,12 +52,10 @@ L 0 1 1 1
 
 			Solver solver(sin, sout, 2);
 
-			sin << R"(
-3
+			sin << R"(3
 C 0 0 1
 L 0 0 1 0
-L 0 0 0 1
-			)" << endl;
+L 0 0 0 1)" << endl;
 
 			int ret = solver.Solve();
 
@@ -75,12 +69,10 @@ L 0 0 0 1
 
 			Solver solver(sin, sout, 2);
 
-			sin << R"(
-3
+			sin << R"(3
 C 0 0 1
 C 1 0 1
-C -1 0 1
-			)" << endl;
+C -1 0 1)" << endl;
 
 			int ret = solver.Solve();
 
