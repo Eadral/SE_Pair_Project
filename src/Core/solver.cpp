@@ -41,7 +41,9 @@ inline int Solver::GetAns() {
 
 inline int Solver::Input() {
     string line_;
-    getline(in_, line_);
+    while (getline(in_, line_)) {
+        if (line_.size() != 0) break;
+    }
     std::cout << line_ << endl;
     if (!isDegital(line_)) {
         throw CoreException(WrongFormatOfN);
@@ -58,6 +60,7 @@ inline int Solver::Input() {
     n_circle_ = 0;
     auto number = n_;
     while (getline(in_, line_)) {
+        if (line_.size() == 0) continue;
         char type = line_.at(0);
         switch (type) {
             case 'L': {
