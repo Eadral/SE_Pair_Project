@@ -8,7 +8,7 @@ using namespace std;
 
 namespace UnitTest
 {
-	TEST_CLASS(LineLineIntersectionTest)
+	TEST_CLASS(SectionSectionIntersectionTest)
 	{
 	public:
 
@@ -19,9 +19,9 @@ namespace UnitTest
 
 			Solver solver(sin, sout);
 
-			solver.LineLineIntersect(
-				Line(0, 0, 1, 1),
-				Line(0, 1, 1, 0)
+			solver.SectionSectionIntersect(
+				Section(0, 0, 1, 1),
+				Section(1, 1, 2, 0)
 			);
 
 			Assert::AreEqual(solver.GetAns(), 1);
@@ -34,9 +34,9 @@ namespace UnitTest
 
 			Solver solver(sin, sout);
 
-			solver.LineLineIntersect(
-				Line(0, 0, 1, 1),
-				Line(0, 1, 1, 2)
+			solver.SectionSectionIntersect(
+				Section(0, 0, 1, 1),
+				Section(2, 2, 3, 3)
 			);
 
 			Assert::AreEqual(solver.GetAns(), 0);
@@ -49,31 +49,10 @@ namespace UnitTest
 
 			Solver solver(sin, sout);
 
-			Assert::ExpectException<CoreException>([&] {solver.LineLineIntersect(
-				Line(0, 0, 1, 1),
-				Line(-1, -1, -2, -2)
+			Assert::ExpectException<CoreException>([&] {solver.SectionSectionIntersect(
+				Section(0, 0, 2, 2),
+				Section(1, 1, 3, 3)
 			); });
 		}
-
-		TEST_METHOD(FourLines)
-		{
-			stringstream sin;
-			stringstream sout;
-
-			Solver solver(sin, sout);
-
-			solver.LineLineIntersect(
-				Line(0, 0, 1, 0),
-				Line(0, 0, 0, 1)
-			);
-
-			solver.LineLineIntersect(
-				Line(0, 1, 1, 1),
-				Line(0, 0, 0, 1)
-			);
-
-			Assert::AreEqual(solver.GetAns(), 2);
-		}
-		
 	};
 }

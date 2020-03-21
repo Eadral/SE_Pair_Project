@@ -243,6 +243,8 @@
     <ClCompile Include="error_test.cpp" />
     <ClCompile Include="line_circle_intersection_test.cpp" />
     <ClCompile Include="line_line_intersection_test.cpp" />
+    <ClCompile Include="line_ray_intersection_test.cpp" />
+    <ClCompile Include="line_section_intersection_test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -252,6 +254,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="example_test.cpp" />
+    <ClCompile Include="ray_circle_intersection_test.cpp" />
+    <ClCompile Include="ray_ray_intersection_test.cpp" />
+    <ClCompile Include="ray_section_intersection_test.cpp" />
+    <ClCompile Include="section_circle_intersection_test.cpp" />
+    <ClCompile Include="section_section_intersection_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -8,7 +8,7 @@ using namespace std;
 
 namespace UnitTest
 {
-	TEST_CLASS(LineLineIntersectionTest)
+	TEST_CLASS(LineRayIntersectionTest)
 	{
 	public:
 
@@ -19,9 +19,9 @@ namespace UnitTest
 
 			Solver solver(sin, sout);
 
-			solver.LineLineIntersect(
+			solver.LineRayIntersect(
 				Line(0, 0, 1, 1),
-				Line(0, 1, 1, 0)
+				Ray(-1, 2, 0, 1)
 			);
 
 			Assert::AreEqual(solver.GetAns(), 1);
@@ -34,9 +34,24 @@ namespace UnitTest
 
 			Solver solver(sin, sout);
 
-			solver.LineLineIntersect(
+			solver.LineRayIntersect(
 				Line(0, 0, 1, 1),
-				Line(0, 1, 1, 2)
+				Ray(0, 1, -1, 2)
+			);
+
+			Assert::AreEqual(solver.GetAns(), 0);
+		}
+
+		TEST_METHOD(Parallel)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			solver.LineRayIntersect(
+				Line(0, 0, 1, 1),
+				Ray(0, 1, 1, 2)
 			);
 
 			Assert::AreEqual(solver.GetAns(), 0);
@@ -49,31 +64,11 @@ namespace UnitTest
 
 			Solver solver(sin, sout);
 
-			Assert::ExpectException<CoreException>([&] {solver.LineLineIntersect(
+			Assert::ExpectException<CoreException>([&] {solver.LineRayIntersect(
 				Line(0, 0, 1, 1),
-				Line(-1, -1, -2, -2)
+				Ray(3, 3, 2, 2)
 			); });
 		}
 
-		TEST_METHOD(FourLines)
-		{
-			stringstream sin;
-			stringstream sout;
-
-			Solver solver(sin, sout);
-
-			solver.LineLineIntersect(
-				Line(0, 0, 1, 0),
-				Line(0, 0, 0, 1)
-			);
-
-			solver.LineLineIntersect(
-				Line(0, 1, 1, 1),
-				Line(0, 0, 0, 1)
-			);
-
-			Assert::AreEqual(solver.GetAns(), 2);
-		}
-		
 	};
 }

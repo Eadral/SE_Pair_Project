@@ -107,7 +107,7 @@ inline int Solver::Input() {
 
 inline bool Solver::PointOnRay(const double& x, const double& y, const Ray& r) {
     if (r.dx < 0) {
-        return x <= static_cast<double>(r.x1);
+        return x >= static_cast<double>(r.x1);
     }
     else if (r.dx > 0) {
         return x <= static_cast<double>(r.x1);
@@ -132,10 +132,10 @@ inline bool Solver::PointOnSection(const double& x, const double& y, const Secti
     }
     else {
         if (s.dy < 0) {
-            return static_cast<double>(s.y1) <= x && x <= static_cast<double>(s.y2);
+            return static_cast<double>(s.y1) <= y && y <= static_cast<double>(s.y2);
         }
         else if (s.dy > 0){
-            return static_cast<double>(s.y2) <= x && x <= static_cast<double>(s.y1);
+            return static_cast<double>(s.y2) <= y && y <= static_cast<double>(s.y1);
         }
     }
     return false;
@@ -186,8 +186,8 @@ inline int Solver::GetPointsInCircles() {
 }
 
 inline int Solver::GetPointsBetweenLinesAndRays() {
-    for (auto i = 0; i < n_line_ - 1; i++) {
-        for (auto j = i + 1; j < n_ray_; j++) {
+    for (auto i = 0; i < n_line_; i++) {
+        for (auto j = 0; j < n_ray_; j++) {
             LineRayIntersect(lines_.at(i), rays_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -197,8 +197,8 @@ inline int Solver::GetPointsBetweenLinesAndRays() {
 }
 
 inline int Solver::GetPointsBetweenLinesAndSections() {
-    for (auto i = 0; i < n_line_ - 1; i++) {
-        for (auto j = i + 1; j < n_section_; j++) {
+    for (auto i = 0; i < n_line_; i++) {
+        for (auto j = 0; j < n_section_; j++) {
             LineSectionIntersect(lines_.at(i), sections_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();

@@ -25,7 +25,7 @@ L 0 0 1 1
 )" << endl;
 
 			solver.Solve();
-			
+
 			int ans;
 			sout >> ans;
 
@@ -95,5 +95,51 @@ L -1 4 4 -1
 
 			Assert::AreEqual(6, ans);
 		}
+
+		TEST_METHOD(Test5)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			sin << R"(
+3
+S -1 3 2 -1
+L -2 2 3 0
+R -3 0 4 2
+)" << endl;
+
+			solver.Solve();
+
+			int ans;
+			sout >> ans;
+
+			Assert::AreEqual(1, ans);
+		}
+
+		TEST_METHOD(Test6)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			sin << R"(
+4
+C 3 3 3
+S 2 4 3 2
+L -1 4 5 2
+R 2 5 -1 2
+)" << endl;
+
+			solver.Solve();
+
+			int ans;
+			sout >> ans;
+
+			Assert::AreEqual(5, ans);
+		}
 	};
 }
+
