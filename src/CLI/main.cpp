@@ -35,6 +35,10 @@ int main(int argc, char* argv[]) {
         std::cerr << ErrorString(err) << endl;
         exit(err);
     }
+    // AddLine(0, 0, 1, 1);
+    // AddLine(1, 0, 0, 1);
+    // int ans = GetIntersectionsSize();
+    // printf("%d", ans);
     
     return 0;
 }

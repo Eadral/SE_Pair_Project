@@ -1,10 +1,4 @@
-#pragma once
-
-enum Error {
-    MaxPointsExceed = 1,
-    InvalidInput,
-};
-
+#include "error.h"
 
 std::string ErrorString(int err_code) {
     switch (err_code) {

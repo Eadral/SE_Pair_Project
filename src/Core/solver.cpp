@@ -34,6 +34,36 @@ inline int Solver::Solve() {
     return 0;
 }
 
+inline int Solver::SolveWithOutIO() {
+    try {
+        auto err = GetPointsInLines();
+        if (err) return err;
+        err = GetPointsInRays();
+        if (err) return err;
+        err = GetPointsInSections();
+        if (err) return err;
+        err = GetPointsInCircles();
+        if (err) return err;
+        err = GetPointsBetweenLinesAndRays();
+        if (err) return err;
+        err = GetPointsBetweenLinesAndSections();
+        if (err) return err;
+        err = GetPointsBetweenLinesAndCircles();
+        if (err) return err;
+        err = GetPointsBetweenRaysAndSections();
+        if (err) return err;
+        err = GetPointsBetweenRaysAndCircles();
+        if (err) return err;
+        err = GetPointsBetweenSectionsAndCircles();
+        if (err) return err;
+    }
+    catch (CoreException e) {
+        std::cout << e.showExceptionMessage() << endl;
+        return InvalidInput;
+    }
+    return 0;
+}
+
 inline int Solver::GetAns() {
     Optimize();
     return static_cast<int>(points_.size());
@@ -49,16 +79,16 @@ inline int Solver::Input() {
         throw CoreException(WrongFormatOfN);
         return InvalidInput;
     }
-    n_ = stoi(line_);
-    if (n_ <= 0) {
+    int n = stoi(line_);
+    if (n <= 0) {
         throw CoreException(InvalidValueOfN);
         return InvalidInput;
     }
-    n_line_ = 0;
-    n_ray_ = 0;
-    n_section_ = 0;
-    n_circle_ = 0;
-    auto number = n_;
+    // n_line_ = 0;
+    // n_ray_ = 0;
+    // n_section_ = 0;
+    // n_circle_ = 0;
+    // auto number = n_;
     while (getline(in_, line_)) {
         if (line_.size() == 0) continue;
         char type = line_.at(0);
@@ -67,39 +97,39 @@ inline int Solver::Input() {
                 vector<int> para = readPara(4, line_);
                 checkPara(para);
                 lines_.emplace_back(para.at(0), para.at(1), para.at(2), para.at(3));
-                n_line_++;
+                // n_line_++;
             }
                     break;
             case 'R': {
                 vector<int> para = readPara(4, line_);
                 checkPara(para);
                 rays_.emplace_back(para.at(0), para.at(1), para.at(2), para.at(3));
-                n_ray_++;
+                // n_ray_++;
             }
                     break;
             case 'S': {
                 vector<int> para = readPara(4, line_);
                 checkPara(para);
                 sections_.emplace_back(para.at(0), para.at(1), para.at(2), para.at(3));
-                n_section_++;
+                // n_section_++;
             }
                     break;
             case 'C': {
                 vector<int> para = readPara(3, line_);
                 checkPara(para);
                 circles_.emplace_back(para.at(0), para.at(1), para.at(2));
-                n_circle_++;
+                // n_circle_++;
             }
                     break;
             default:
                 throw CoreException(WrongFormatOfObjectIdentifier);
         }
-        n_--;
+        n--;
     }
-    if (n_ > 0) {
+    if (n > 0) {
         throw CoreException(ObjectInputTooLittle);
     }
-    else if (n_ < 0) {
+    else if (n < 0) {
         throw CoreException(ObjectInputTooMuch);
     }
     return 0;
@@ -142,8 +172,8 @@ inline bool Solver::PointOnSection(const double& x, const double& y, const Secti
 }
 
 inline int Solver::GetPointsInLines() {
-    for (auto i = 0; i < n_line_ - 1; i++) {
-        for (auto j = i + 1; j < n_line_; j++) {
+    for (auto i = 0; i < int(lines_.size()) - 1; i++) {
+        for (auto j = i + 1; j < lines_.size(); j++) {
             LineLineIntersect(lines_.at(i), lines_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -153,8 +183,8 @@ inline int Solver::GetPointsInLines() {
 }
 
 inline int Solver::GetPointsInRays() {
-    for (auto i = 0; i < n_ray_ - 1; i++) {
-        for (auto j = i + 1; j < n_ray_; j++) {
+    for (auto i = 0; i < int(rays_.size()) - 1; i++) {
+        for (auto j = i + 1; j < rays_.size(); j++) {
             RayRayIntersect(rays_.at(i), rays_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -164,8 +194,8 @@ inline int Solver::GetPointsInRays() {
 }
 
 inline int Solver::GetPointsInSections() {
-    for (auto i = 0; i < n_section_ - 1; i++) {
-        for (auto j = i + 1; j < n_section_; j++) {
+    for (auto i = 0; i < int(sections_.size()) - 1; i++) {
+        for (auto j = i + 1; j < sections_.size(); j++) {
             SectionSectionIntersect(sections_.at(i), sections_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -175,8 +205,8 @@ inline int Solver::GetPointsInSections() {
 }
 
 inline int Solver::GetPointsInCircles() {
-    for (auto i = 0; i < n_circle_ - 1; i++) {
-        for (auto j = i + 1; j < n_circle_; j++) {
+    for (auto i = 0; i < int(circles_.size()) - 1; i++) {
+        for (auto j = i + 1; j < circles_.size(); j++) {
             CircleCircleIntersect(circles_.at(i), circles_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -186,8 +216,8 @@ inline int Solver::GetPointsInCircles() {
 }
 
 inline int Solver::GetPointsBetweenLinesAndRays() {
-    for (auto i = 0; i < n_line_ - 1; i++) {
-        for (auto j = i + 1; j < n_ray_; j++) {
+    for (auto i = 0; i < int(lines_.size()) - 1; i++) {
+        for (auto j = i + 1; j < rays_.size(); j++) {
             LineRayIntersect(lines_.at(i), rays_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -197,8 +227,8 @@ inline int Solver::GetPointsBetweenLinesAndRays() {
 }
 
 inline int Solver::GetPointsBetweenLinesAndSections() {
-    for (auto i = 0; i < n_line_ - 1; i++) {
-        for (auto j = i + 1; j < n_section_; j++) {
+    for (auto i = 0; i < int(lines_.size()) - 1; i++) {
+        for (auto j = i + 1; j < sections_.size(); j++) {
             LineSectionIntersect(lines_.at(i), sections_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -208,8 +238,8 @@ inline int Solver::GetPointsBetweenLinesAndSections() {
 }
 
 inline int Solver::GetPointsBetweenLinesAndCircles() {
-    for (auto i = 0; i < n_line_; i++) {
-        for (auto j = 0; j < n_circle_; j++) {
+    for (auto i = 0; i < lines_.size(); i++) {
+        for (auto j = 0; j < circles_.size(); j++) {
             LineCircleIntersect(lines_.at(i), circles_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -219,8 +249,8 @@ inline int Solver::GetPointsBetweenLinesAndCircles() {
 }
 
 inline int Solver::GetPointsBetweenRaysAndSections() {
-    for (auto i = 0; i < n_ray_; i++) {
-        for (auto j = 0; j < n_section_; j++) {
+    for (auto i = 0; i < rays_.size(); i++) {
+        for (auto j = 0; j < sections_.size(); j++) {
             RaySectionIntersect(rays_.at(i), sections_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -230,8 +260,8 @@ inline int Solver::GetPointsBetweenRaysAndSections() {
 }
 
 inline int Solver::GetPointsBetweenRaysAndCircles() {
-    for (auto i = 0; i < n_ray_; i++) {
-        for (auto j = 0; j < n_circle_; j++) {
+    for (auto i = 0; i < rays_.size(); i++) {
+        for (auto j = 0; j < circles_.size(); j++) {
             RayCircleIntersect(rays_.at(i), circles_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -241,8 +271,8 @@ inline int Solver::GetPointsBetweenRaysAndCircles() {
 }
 
 inline int Solver::GetPointsBetweenSectionsAndCircles() {
-    for (auto i = 0; i < n_section_; i++) {
-        for (auto j = 0; j < n_circle_; j++) {
+    for (auto i = 0; i < sections_.size(); i++) {
+        for (auto j = 0; j < circles_.size(); j++) {
             SectionCircleIntersect(sections_.at(i), circles_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -667,4 +697,127 @@ inline void Solver::SectionCircleIntersect(const Section& s, const Circle& c) {
         if (PointOnSection(xc, yc, s)) points_.emplace_back(xc, yc);
         if (PointOnSection(xd, yd, s)) points_.emplace_back(xd, yd);
     }
+}
+
+std::stringstream __sin;
+std::stringstream __sout;
+Solver __solver(__sin, __sout);
+
+extern "C" {
+
+    INTERSECT_API void Clear() {
+        __solver.Clear();
+    }
+
+    INTERSECT_API void Input(char* input) {
+        string buf = input;
+        __sin << buf;
+        __solver.Input();
+    }
+
+    INTERSECT_API void AddLine(int x1, int y1, int x2, int y2) {
+        __solver.lines_.emplace_back(x1, y1, x2, y2);
+    }
+
+    INTERSECT_API void RemoveLine(int x1, int y1, int x2, int y2) {
+        __solver.lines_.erase(
+            std::remove(std::begin(__solver.lines_), std::end(__solver.lines_), Line(x1, y1, x2, y2)),
+            std::end(__solver.lines_));
+    }
+
+    INTERSECT_API int GetLinesSize() {
+        return int(__solver.lines_.size());
+    }
+
+    INTERSECT_API void GetLines(int* x1s, int* y1s, int* x2s, int* y2s, int size) {
+        for (int i = 0; i < size; i++) {
+            x1s[i] = __solver.lines_[i].x1;
+            y1s[i] = __solver.lines_[i].y1;
+            x2s[i] = __solver.lines_[i].x2;
+            y2s[i] = __solver.lines_[i].y2;
+        }
+    }
+
+    INTERSECT_API void AddCircle(int x, int y, int r) {
+        __solver.circles_.emplace_back(x, y, r);
+    }
+
+    INTERSECT_API void RemoveCircle(int x, int y, int r) {
+        __solver.circles_.erase(
+            std::remove(std::begin(__solver.circles_), std::end(__solver.circles_), Circle(x, y, r)),
+            std::end(__solver.circles_));
+    }
+
+    INTERSECT_API int GetCirclesSize() {
+        return int(__solver.circles_.size());
+    }
+
+    INTERSECT_API void GetCircles(int* xs, int* ys, int* rs, int size) {
+        for (int i = 0; i < size; i++) {
+            xs[i] = __solver.circles_[i].x;
+            ys[i] = __solver.circles_[i].y;
+            rs[i] = __solver.circles_[i].r;
+        }
+    }
+
+    INTERSECT_API void AddRay(int x1, int y1, int x2, int y2) {
+        __solver.rays_.emplace_back(x1, y1, x2, y2);
+    }
+
+    INTERSECT_API void RemoveRay(int x1, int y1, int x2, int y2) {
+        __solver.rays_.erase(
+            std::remove(std::begin(__solver.rays_), std::end(__solver.rays_), Ray(x1, y1, x2, y2)),
+            std::end(__solver.rays_));
+    }
+
+    INTERSECT_API int GetRaysSize() {
+        return int(__solver.rays_.size());
+    }
+
+    INTERSECT_API void GetRays(int* x1s, int* y1s, int* x2s, int* y2s, int size) {
+        for (int i = 0; i < size; i++) {
+            x1s[i] = __solver.rays_[i].x1;
+            y1s[i] = __solver.rays_[i].y1;
+            x2s[i] = __solver.rays_[i].x2;
+            y2s[i] = __solver.rays_[i].y2;
+        }
+    }
+
+    INTERSECT_API void AddSection(int x1, int y1, int x2, int y2) {
+        __solver.sections_.emplace_back(x1, y1, x2, y2);
+    }
+
+    INTERSECT_API void RemoveSection(int x1, int y1, int x2, int y2) {
+        __solver.sections_.erase(
+            std::remove(std::begin(__solver.sections_), std::end(__solver.sections_), Section(x1, y1, x2, y2)),
+            std::end(__solver.sections_));
+    }
+
+    INTERSECT_API int GetSectionsSize() {
+        return int(__solver.sections_.size());
+    }
+
+    INTERSECT_API void GetSections(int* x1s, int* y1s, int* x2s, int* y2s, int size) {
+        for (int i = 0; i < size; i++) {
+            x1s[i] = __solver.sections_[i].x1;
+            y1s[i] = __solver.sections_[i].y1;
+            x2s[i] = __solver.sections_[i].x2;
+            y2s[i] = __solver.sections_[i].y2;
+        }
+    }
+
+    INTERSECT_API int GetIntersectionsSize() {
+        __solver.SolveWithOutIO();
+        __solver.Optimize();
+        return int(__solver.points_.size());
+    }
+
+    INTERSECT_API void GetIntersections(float* xs, float* ys, int size) {
+        for (int i = 0; i < size; i++) {
+            xs[i] = float(__solver.points_[i].x);
+            ys[i] = float(__solver.points_[i].y);
+        }
+    }
+
+
 }

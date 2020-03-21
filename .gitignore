@@ -23,3 +23,5 @@ bin/output.txt
 *.coverage
 /test/.opencppcov/UnitTest/*.json
 *.sarif
+/src/GUI/bin/Release/netcoreapp3.1
+/src/GUI/obj

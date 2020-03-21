@@ -3,10 +3,11 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <sstream>
 
 #include "circle.hpp"
-#include "error.hpp"
-#include "exception.hpp"
+#include "error.h"
+#include "exception.h"
 #include "line.hpp"
 #include "section.hpp"
 #include "ray.hpp"
@@ -31,13 +32,15 @@ class Solver {
     istream& in_;
     ostream& out_;
 
-    int n_;
-    int n_line_;
-    int n_section_;
-    int n_ray_;
-    int n_circle_;
+    // int n_;
+    // int n_line_;
+    // int n_section_;
+    // int n_ray_;
+    // int n_circle_;
 
     const int kMaxN_;
+
+public:
 
     vector<Line> lines_;
     vector<Ray> rays_;
@@ -45,12 +48,25 @@ class Solver {
     vector<Circle> circles_;
     vector<Point> points_;
 
-
-public:
     INTERSECT_API Solver(istream& in, ostream& out, const int kMaxN_ = 5000000) noexcept
-        :in_(in), out_(out), n_(0), n_line_(0), n_ray_(0), n_section_(0), n_circle_(0), kMaxN_(kMaxN_) {    }
+        :in_(in), out_(out), kMaxN_(kMaxN_) {    }
+
+    void Clear() {
+        // n_ = 0;
+        // n_line_ = 0;
+        // n_section_ = 0;
+        // n_ray_ = 0;
+        // n_circle_ = 0;
+        lines_.clear();
+        rays_.clear();
+        sections_.clear();
+        circles_.clear();
+        points_.clear();
+    }
 
     INTERSECT_API int Solve();
+
+    int SolveWithOutIO();
 
     INTERSECT_API int GetAns();
 
@@ -102,3 +118,48 @@ public:
 
     INTERSECT_API void SectionCircleIntersect(const Section& s, const Circle& c);
 };
+
+
+extern "C" {
+
+    INTERSECT_API void Clear();
+
+    INTERSECT_API void Input(char *input);
+
+    INTERSECT_API void AddLine(int x1, int y1, int x2, int y2);
+
+    INTERSECT_API void RemoveLine(int x1, int y1, int x2, int y2);
+
+    INTERSECT_API int GetLinesSize();
+
+    INTERSECT_API void GetLines(int* x1s, int* y1s, int* x2s, int* y2s, int size);
+
+    INTERSECT_API void AddCircle(int x, int y, int r);
+
+    INTERSECT_API void RemoveCircle(int x, int y, int r);
+
+    INTERSECT_API int GetCirclesSize();
+
+    INTERSECT_API void GetCircles(int* xs, int* ys, int* rs, int size);
+
+    INTERSECT_API void AddRay(int x1, int y1, int x2, int y2);
+
+    INTERSECT_API void RemoveRay(int x1, int y1, int x2, int y2);
+
+    INTERSECT_API int GetRaysSize();
+
+    INTERSECT_API void GetRays(int* x1s, int* y1s, int* x2s, int* y2s, int size);
+
+    INTERSECT_API void AddSection(int x1, int y1, int x2, int y2);
+
+    INTERSECT_API void RemoveSection(int x1, int y1, int x2, int y2);
+
+    INTERSECT_API int GetSectionsSize();
+
+    INTERSECT_API void GetSections(int* x1s, int* y1s, int* x2s, int* y2s, int size);
+
+    INTERSECT_API int GetIntersectionsSize();
+
+    INTERSECT_API void GetIntersections(float* xs, float* ys, int size);
+
+}
