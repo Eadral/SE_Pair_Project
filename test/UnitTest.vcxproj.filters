@@ -30,9 +30,6 @@
     <ClCompile Include="circle_circle_intersection_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="error_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="line_ray_intersection_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -52,6 +49,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="section_circle_intersection_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="error_and_exception_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

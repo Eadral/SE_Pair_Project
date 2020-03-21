@@ -47,15 +47,7 @@ struct CoreException : public std::exception
 		noexcept:exc_code(exc_code), line_number(line_number), line2_number(line2_number) {}
 	const std::string showExceptionMessage() noexcept
 	{
-		if (exc_code == InfiniteIntersectionsFound) {
-			return ExpectionString(exc_code) + " on line " + std::to_string(line_number) + " and " + std::to_string(line2_number);
-		}
-		else if (exc_code == ElementToDeleteNotFound) {
-			return ExpectionString(exc_code);
-		}
-		else {
-			return ExpectionString(exc_code) + " on line " + std::to_string(line_number);
-		}		
+		return ExpectionString(exc_code);	
 	}
 };
 
@@ -97,7 +89,7 @@ inline std::vector<int> readPara(const int argc, const std::string line) {
 
 inline void checkPara(const std::vector<int> para) {
 	if (para.size() == 4) {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			if (para.at(i) < MIN_COORDINATE || para.at(i) > MAX_COORDINATE) {
 				throw CoreException(CoordinateValueExceed);
 			}
@@ -108,7 +100,7 @@ inline void checkPara(const std::vector<int> para) {
 	}
 	else {
 		//para.size() == 3
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 2; i++) {
 			if (para.at(i) < MIN_COORDINATE || para.at(i) > MAX_COORDINATE) {
 				throw CoreException(CoordinateValueExceed);
 			}

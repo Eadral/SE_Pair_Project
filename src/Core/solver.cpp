@@ -1,36 +1,30 @@
 #include "solver.h"
 
 inline int Solver::Solve() {
-    try {
-        auto err = Input();
-        if (err) return err;
+    auto err = Input();
+    if (err) return err;
 
-        err = GetPointsInLines();
-        if (err) return err;
-        err = GetPointsInRays();
-        if (err) return err;
-        err = GetPointsInSections();
-        if (err) return err;
-        err = GetPointsInCircles();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndRays();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndSections();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndCircles();
-        if (err) return err;
-        err = GetPointsBetweenRaysAndSections();
-        if (err) return err;
-        err = GetPointsBetweenRaysAndCircles();
-        if (err) return err;
-        err = GetPointsBetweenSectionsAndCircles();
-        if (err) return err;
-        out_ << GetAns() << endl;
-    }
-    catch (CoreException e) {
-        std::cout << e.showExceptionMessage() << endl;
-        return InvalidInput;
-    }   
+    err = GetPointsInLines();
+    if (err) return err;
+    err = GetPointsInRays();
+    if (err) return err;
+    err = GetPointsInSections();
+    if (err) return err;
+    err = GetPointsInCircles();
+    if (err) return err;
+    err = GetPointsBetweenLinesAndRays();
+    if (err) return err;
+    err = GetPointsBetweenLinesAndSections();
+    if (err) return err;
+    err = GetPointsBetweenLinesAndCircles();
+    if (err) return err;
+    err = GetPointsBetweenRaysAndSections();
+    if (err) return err;
+    err = GetPointsBetweenRaysAndCircles();
+    if (err) return err;
+    err = GetPointsBetweenSectionsAndCircles();
+    if (err) return err;
+    out_ << GetAns() << endl;
     return 0;
 }
 
