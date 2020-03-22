@@ -51,8 +51,5 @@
     <ClCompile Include="section_section_intersection_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="error_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

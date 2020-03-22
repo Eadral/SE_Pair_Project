@@ -1,8 +1,7 @@
+#include "../src/Core/solver.h"
 #include "CppUnitTest.h"
 
 #include <sstream>
-
-#include "../src/Core/solver.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

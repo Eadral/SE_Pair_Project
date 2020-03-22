@@ -1,6 +1,34 @@
 #include "solver.h"
 
 inline int Solver::Solve() {
+    auto err = Input();
+    if (err) return err;
+
+    err = GetPointsInLines();
+    if (err) return err;
+    err = GetPointsInRays();
+    if (err) return err;
+    err = GetPointsInSections();
+    if (err) return err;
+    err = GetPointsInCircles();
+    if (err) return err;
+    err = GetPointsBetweenLinesAndRays();
+    if (err) return err;
+    err = GetPointsBetweenLinesAndSections();
+    if (err) return err;
+    err = GetPointsBetweenLinesAndCircles();
+    if (err) return err;
+    err = GetPointsBetweenRaysAndSections();
+    if (err) return err;
+    err = GetPointsBetweenRaysAndCircles();
+    if (err) return err;
+    err = GetPointsBetweenSectionsAndCircles();
+    if (err) return err;
+    out_ << GetAns() << endl;
+    return 0;
+}
+
+inline int Solver::SolveWithOutIO() {
     try {
         auto err = Input();
         if (err) return err;
@@ -26,36 +54,6 @@ inline int Solver::Solve() {
         err = GetPointsBetweenSectionsAndCircles();
         if (err) return err;
         out_ << GetAns() << endl;
-    }
-    catch (CoreException e) {
-        std::cout << e.showExceptionMessage() << endl;
-        return InvalidInput;
-    }   
-    return 0;
-}
-
-inline int Solver::SolveWithOutIO() {
-    try {
-        auto err = GetPointsInLines();
-        if (err) return err;
-        err = GetPointsInRays();
-        if (err) return err;
-        err = GetPointsInSections();
-        if (err) return err;
-        err = GetPointsInCircles();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndRays();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndSections();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndCircles();
-        if (err) return err;
-        err = GetPointsBetweenRaysAndSections();
-        if (err) return err;
-        err = GetPointsBetweenRaysAndCircles();
-        if (err) return err;
-        err = GetPointsBetweenSectionsAndCircles();
-        if (err) return err;
     }
     catch (CoreException e) {
         std::cout << e.showExceptionMessage() << endl;
@@ -137,7 +135,7 @@ inline int Solver::Input() {
 
 inline bool Solver::PointOnRay(const double& x, const double& y, const Ray& r) {
     if (r.dx < 0) {
-        return x <= static_cast<double>(r.x1);
+        return x >= static_cast<double>(r.x1);
     }
     else if (r.dx > 0) {
         return x <= static_cast<double>(r.x1);
@@ -162,10 +160,10 @@ inline bool Solver::PointOnSection(const double& x, const double& y, const Secti
     }
     else {
         if (s.dy < 0) {
-            return static_cast<double>(s.y1) <= x && x <= static_cast<double>(s.y2);
+            return static_cast<double>(s.y1) <= y && y <= static_cast<double>(s.y2);
         }
         else if (s.dy > 0){
-            return static_cast<double>(s.y2) <= x && x <= static_cast<double>(s.y1);
+            return static_cast<double>(s.y2) <= y && y <= static_cast<double>(s.y1);
         }
     }
     return false;
@@ -216,8 +214,8 @@ inline int Solver::GetPointsInCircles() {
 }
 
 inline int Solver::GetPointsBetweenLinesAndRays() {
-    for (auto i = 0; i < int(lines_.size()) - 1; i++) {
-        for (auto j = i + 1; j < rays_.size(); j++) {
+    for (auto i = 0; i < int(lines_.size()); i++) {
+        for (auto j = 0; j < rays_.size(); j++) {
             LineRayIntersect(lines_.at(i), rays_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();
@@ -227,8 +225,8 @@ inline int Solver::GetPointsBetweenLinesAndRays() {
 }
 
 inline int Solver::GetPointsBetweenLinesAndSections() {
-    for (auto i = 0; i < int(lines_.size()) - 1; i++) {
-        for (auto j = i + 1; j < sections_.size(); j++) {
+    for (auto i = 0; i < int(lines_.size()); i++) {
+        for (auto j = 0; j < sections_.size(); j++) {
             LineSectionIntersect(lines_.at(i), sections_.at(j));
         }
         if (points_.size() > kMaxN_) Optimize();

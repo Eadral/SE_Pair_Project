@@ -241,7 +241,6 @@
   <ItemGroup>
     <ClCompile Include="circle_circle_intersection_test.cpp" />
     <ClCompile Include="error_and_exception_test.cpp" />
-    <ClCompile Include="error_test.cpp" />
     <ClCompile Include="line_circle_intersection_test.cpp" />
     <ClCompile Include="line_line_intersection_test.cpp" />
     <ClCompile Include="example_test.cpp" />
