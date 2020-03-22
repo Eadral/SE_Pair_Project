@@ -21,3 +21,15 @@ struct Point {
         return abs(lhs.x - rhs.x) <= kEps && abs(lhs.y - rhs.y) <= kEps;
     }
 };
+
+
+inline int dcmp(double a, double b) {
+    if (abs(a - b) <= kEps)
+        return 0;
+    if (a < b) {
+        return -1;
+    }
+    else {
+        return 1;
+    }
+}
