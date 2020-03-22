@@ -38,8 +38,11 @@ int main(int argc, char* argv[]) {
     // AddLine(0, 0, 1, 1);
     // AddLine(1, 0, 0, 1);
     // int ans = GetIntersectionsSize();
-    // printf("%d", ans);
-    
+    // printf("%d\n", ans);
+    // RemoveLine(1, 0, 0, 1);
+    // ans = GetIntersectionsSize();
+    // printf("%d\n", ans);
+    //
     return 0;
 }
 

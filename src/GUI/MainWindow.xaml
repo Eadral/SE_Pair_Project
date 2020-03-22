@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Intersect" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400*"/>
             <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="canvas" Grid.Column="0" Margin="5" 
+        <Canvas x:Name="canvas" Grid.Column="0" Margin="5" ClipToBounds="True" 
                 MouseWheel="Canvas_OnMouseWheel" MouseLeftButtonDown="Canvas_OnMouseLeftButtonDown" 
                 MouseMove="Canvas_OnMouseMove" MouseLeftButtonUp="Canvas_OnMouseLeftButtonUp"/>
 
@@ -25,18 +25,18 @@
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="100" />
+                    <!-- <ColumnDefinition Width="100" /> -->
+                    <!-- <ColumnDefinition Width="100" /> -->
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Margin="5">Import</Button>
-                <Button Grid.Column="1" Margin="5" Click="ButtonDraw">Draw</Button>
-                <Button Grid.Column="2" Margin="5" Click="ButtonDebug">Debug</Button>
+                <Button Grid.Column="0" Margin="5" Click="ButtonImport">Import</Button>
+                <!-- <Button Grid.Column="1" Margin="5" Click="ButtonDraw">Draw</Button> -->
+                <!-- <Button Grid.Column="2" Margin="5" Click="ButtonDebug">Debug</Button> -->
 
             </Grid>
 
             <Grid Grid.Row="1">
                 
-                <ListView Margin="5" x:Name="listView">
+                <ListView Margin="5" x:Name="listView" SelectionChanged="ListView_OnSelected">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Type" Width="50" DisplayMemberBinding="{Binding type}"></GridViewColumn>
@@ -57,19 +57,47 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+
+                        <ColumnDefinition Width="25" />
                         <ColumnDefinition Width="50" />
+
+                        <ColumnDefinition Width="25" />
                         <ColumnDefinition Width="50" />
+
+                        <ColumnDefinition Width="25" />
                         <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="50" />
+
+                        <ColumnDefinition Width="25" />
                         <ColumnDefinition Width="50" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Margin="5" x:Name="text_type"></TextBox>
-                    <TextBox Grid.Column="1" Margin="5" x:Name="text_x1"></TextBox>
-                    <TextBox Grid.Column="2" Margin="5" x:Name="text_y1"></TextBox>
-                    <TextBox Grid.Column="3" Margin="5" x:Name="text_x2"></TextBox>
-                    <TextBox Grid.Column="4" Margin="5" x:Name="text_y2"></TextBox>
-                    <TextBox Grid.Column="5" Margin="5" x:Name="text_r"></TextBox>
+                    <ComboBox Grid.Column="0" Margin="5" x:Name="selectType" SelectedIndex="0" SelectionChanged="selectType_SelectionChanged">
+                        <ComboBoxItem>
+                            <TextBlock Text="Line"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="Ray"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="Section"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="Circle"/>
+                        </ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock Grid.Column="1" Margin="6" x:Name="label1">x1:</TextBlock>
+                    <TextBox Grid.Column="2" Margin="5" x:Name="text1">0</TextBox>
+
+                    <TextBlock Grid.Column="3" Margin="6" x:Name="label2">y1:</TextBlock>
+                    <TextBox Grid.Column="4" Margin="5" x:Name="text2">0</TextBox>
+
+                    <TextBlock Grid.Column="5" Margin="6" x:Name="label3">x2:</TextBlock>
+                    <TextBox Grid.Column="6" Margin="5" x:Name="text3">1</TextBox>
+
+                    <TextBlock Grid.Column="7" Margin="6" x:Name="label4">y2:</TextBlock>
+                    <TextBox Grid.Column="8" Margin="5" x:Name="text4">1</TextBox>
+
+                    
                     
                 </Grid>
                 <Grid Grid.Row="1">
@@ -78,7 +106,7 @@
                         <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="0" Margin="5" Click="ButtonAdd">Add</Button>
-                    <Button Grid.Column="1" Margin="5">Remove</Button>
+                    <Button Grid.Column="1" Margin="5" Click="ButtonRemove">Remove</Button>
                 </Grid>
                 
             </Grid>

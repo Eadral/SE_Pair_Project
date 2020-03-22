@@ -807,6 +807,7 @@ extern "C" {
     }
 
     INTERSECT_API int GetIntersectionsSize() {
+        __solver.points_.clear();
         __solver.SolveWithOutIO();
         __solver.Optimize();
         return int(__solver.points_.size());
