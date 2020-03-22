@@ -240,10 +240,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="circle_circle_intersection_test.cpp" />
-    <ClCompile Include="error_test.cpp" />
+    <ClCompile Include="error_and_exception_test.cpp" />
     <ClCompile Include="line_circle_intersection_test.cpp" />
     <ClCompile Include="line_line_intersection_test.cpp" />
     <ClCompile Include="example_test.cpp" />
+    <ClCompile Include="line_ray_intersection_test.cpp" />
+    <ClCompile Include="line_section_intersection_test.cpp" />
+    <ClCompile Include="ray_circle_intersection_test.cpp" />
+    <ClCompile Include="ray_ray_intersection_test.cpp" />
+    <ClCompile Include="ray_section_intersection_test.cpp" />
+    <ClCompile Include="section_circle_intersection_test.cpp" />
+    <ClCompile Include="section_section_intersection_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\Core\Core.vcxproj">

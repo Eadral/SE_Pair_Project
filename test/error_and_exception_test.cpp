@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../src/Core/solver.h"
 #include "CppUnitTest.h"
 
 #include <sstream>
@@ -51,6 +51,20 @@ L 0 0 1 1
 			sin << R"(
 *#06#
 L 0 0 1 1
+)" << endl;
+
+			Assert::ExpectException<CoreException>([&] {solver.Solve(); });
+		}
+
+		TEST_METHOD(InvalidValOfNTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			sin << R"(
+0
 )" << endl;
 
 			Assert::ExpectException<CoreException>([&] {solver.Solve(); });

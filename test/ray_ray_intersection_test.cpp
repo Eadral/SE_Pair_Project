@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../src/Core/solver.h"
 #include "CppUnitTest.h"
 
 #include <sstream>
