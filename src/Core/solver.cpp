@@ -77,7 +77,10 @@ inline int Solver::Input() {
         throw CoreException(WrongFormatOfN);
         return InvalidInput;
     }
+    if (line_.empty())
+        return 0;
     int n = stoi(line_);
+    
     if (n <= 0) {
         throw CoreException(InvalidValueOfN);
         return InvalidInput;
