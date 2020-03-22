@@ -215,8 +215,8 @@ namespace GUI {
         private void DrawRay(double x1, double y1, double x2, double y2) {
             double dx = x2 - x1;
             double dy = y2 - y1;
-            x2 = x1 + 1000000 * dx;
-            y2 = y1 + 1000000 * dy;
+            x2 = x1 + 1000 * dx;
+            y2 = y1 + 1000 * dy;
             DrawLineBasic(x1, y1, x2, y2, 1, color, 1);
         }
 
@@ -499,6 +499,7 @@ namespace GUI {
             string txtFile = openFileDialog.FileName;
             string text = System.IO.File.ReadAllText(txtFile);
             IntersectAPI.Input(text);
+            int size = IntersectAPI.GetIntersectionsSize();
             Draw();
         }
     }

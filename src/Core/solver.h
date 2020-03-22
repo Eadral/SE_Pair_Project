@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <fstream>
 
 #include "circle.hpp"
 #include "error.h"

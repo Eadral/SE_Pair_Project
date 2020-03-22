@@ -28,14 +28,14 @@
                     <!-- <ColumnDefinition Width="100" /> -->
                     <!-- <ColumnDefinition Width="100" /> -->
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Margin="5" Click="ButtonImport">Import</Button>
+                <Button Grid.Column="0" Margin="5,5,0,5" Click="ButtonImport" HorizontalAlignment="Left" Width="90">Import</Button>
                 <!-- <Button Grid.Column="1" Margin="5" Click="ButtonDraw">Draw</Button> -->
                 <!-- <Button Grid.Column="2" Margin="5" Click="ButtonDebug">Debug</Button> -->
 
             </Grid>
 
             <Grid Grid.Row="1">
-                
+
                 <ListView Margin="5" x:Name="listView" SelectionChanged="ListView_OnSelected">
                     <ListView.View>
                         <GridView>
@@ -97,8 +97,8 @@
                     <TextBlock Grid.Column="7" Margin="6" x:Name="label4">y2:</TextBlock>
                     <TextBox Grid.Column="8" Margin="5" x:Name="text4">1</TextBox>
 
-                    
-                    
+
+
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -108,9 +108,9 @@
                     <Button Grid.Column="0" Margin="5" Click="ButtonAdd">Add</Button>
                     <Button Grid.Column="1" Margin="5" Click="ButtonRemove">Remove</Button>
                 </Grid>
-                
+
             </Grid>
         </Grid>
-        
+
     </Grid>
 </Window>

@@ -29,11 +29,11 @@ inline int Solver::Solve() {
 }
 
 inline int Solver::SolveWithOutIO() {
-    try {
-        auto err = Input();
-        if (err) return err;
+    // try {
+    //     auto err = Input();
+    //     if (err) return err;
 
-        err = GetPointsInLines();
+        auto err = GetPointsInLines();
         if (err) return err;
         err = GetPointsInRays();
         if (err) return err;
@@ -53,12 +53,12 @@ inline int Solver::SolveWithOutIO() {
         if (err) return err;
         err = GetPointsBetweenSectionsAndCircles();
         if (err) return err;
-        out_ << GetAns() << endl;
-    }
-    catch (CoreException e) {
-        std::cout << e.showExceptionMessage() << endl;
-        return InvalidInput;
-    }
+    //     out_ << GetAns() << endl;
+    // }
+    // catch (CoreException e) {
+    //     std::cout << e.showExceptionMessage() << endl;
+    //     return InvalidInput;
+    // }
     return 0;
 }
 
@@ -700,9 +700,11 @@ inline void Solver::SectionCircleIntersect(const Section& s, const Circle& c) {
     }
 }
 
+
 std::stringstream __sin;
 std::stringstream __sout;
 Solver __solver(__sin, __sout);
+// std::ofstream fout;
 
 extern "C" {
 
@@ -711,8 +713,11 @@ extern "C" {
     }
 
     INTERSECT_API void Input(char* input) {
+        // fout = std::ofstream("debug.txt");
+        // fout << "Input: ";
         string buf = input;
         __sin << buf;
+        // fout << buf << endl;
         __solver.Input();
     }
 

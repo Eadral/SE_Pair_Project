@@ -43,6 +43,10 @@ int main(int argc, char* argv[]) {
     // ans = GetIntersectionsSize();
     // printf("%d\n", ans);
     //
+    // char buf[] = "2\nL 0 0 1 1\nL 0 1 1 0\n";
+    // Input(buf);
+    // int ans = GetIntersectionsSize();
+    // printf("%d\n", ans);
     return 0;
 }
 
