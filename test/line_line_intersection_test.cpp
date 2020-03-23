@@ -55,6 +55,21 @@ namespace UnitTest
 			); });
 		}
 
+		TEST_METHOD(NoInfinietIntersections)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			solver.LineLineIntersect(
+				Line(-1, -2, -1, -5),
+				Line(1, 2, 1, 5)
+			);
+
+			Assert::AreEqual(solver.GetAns(), 0);
+		}
+
 		TEST_METHOD(FourLines)
 		{
 			stringstream sin;
