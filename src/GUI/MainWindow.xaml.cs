@@ -14,7 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Globalization;
+using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 namespace GUI {
@@ -24,6 +26,8 @@ namespace GUI {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+            
+            resman = new ResourceManager(new Resource().GetType());
             canvas.Focusable = true;
             canvas.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
             canvas.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
@@ -41,8 +45,35 @@ namespace GUI {
             totalScale.CenterX = this.Width / 4;
             totalScale.CenterY = this.Height / 2;
 
+            try
+            {
+                NativeMethods.Clear();
+            }
+            catch (ExternalException e)
+            {
+                try
+                {
+                    NativeMethods.resetRes();
+                    api_type = 1;
+                }
+                catch (Exception exception) {
+                    Console.WriteLine(exception);
+                }
+               
+            }
+
             adjustGraph();
-            IntersectAPI.Clear();
+            
+
+           
+        }
+
+        private int api_type = 0;
+
+        ResourceManager resman;
+
+        private int IntParse(string str) {
+            return int.Parse(str, CultureInfo.InvariantCulture);
         }
 
         private void ButtonAdd(object sender, RoutedEventArgs e) {
@@ -54,35 +85,16 @@ namespace GUI {
             string r = text3.Text;
             //
             if (selectType.SelectedIndex == 0) {
-                IntersectAPI.AddLine(int.Parse(x1), int.Parse(y1), int.Parse(x2), int.Parse(y2));
+                AddLine(IntParse(x1), IntParse(y1), IntParse(x2), IntParse(y2));
             } else if (selectType.SelectedIndex == 3) {
-                IntersectAPI.AddCircle(int.Parse(x1), int.Parse(y1), int.Parse(r));
+                AddCircle(IntParse(x1), IntParse(y1), IntParse(r));
             } else if (selectType.SelectedIndex == 1) {
-                IntersectAPI.AddRay(int.Parse(x1), int.Parse(y1), int.Parse(x2), int.Parse(y2));
+                AddRay(IntParse(x1), IntParse(y1), IntParse(x2), IntParse(y2));
             } else if (selectType.SelectedIndex == 2) {
-                IntersectAPI.AddSection(int.Parse(x1), int.Parse(y1), int.Parse(x2), int.Parse(y2));
+                AddSection(IntParse(x1), IntParse(y1), IntParse(x2), IntParse(y2));
             }
             
             Draw();
-        }
-
-        private void ButtonDebug(object sender, RoutedEventArgs e) {
-            // IntersectAPI.Clear();
-            // Trace.WriteLine("test");
-            // Draw();
-            // Trace.WriteLine("test end");
-            Trace.WriteLine($"lines: {IntersectAPI.GetLinesSize()}");
-            Trace.WriteLine($"intersections: {IntersectAPI.GetIntersectionsSize()}");
-            int size = IntersectAPI.GetLinesSize();
-            int[] x1s = new int[size];
-            int[] y1s = new int[size];
-            int[] x2s = new int[size];
-            int[] y2s = new int[size];
-            IntersectAPI.GetLines(x1s, y1s, x2s, y2s, size);
-            for (int i = 0; i < size; i++) {
-                Trace.WriteLine($"Line({x1s[i]}, {y1s[i]}, {x2s[i]}, {y2s[i]})");
-            }
-
         }
 
         bool isMoving = false;
@@ -169,12 +181,12 @@ namespace GUI {
         }
 
         private void DrawIntersections() {
-            int size = IntersectAPI.GetIntersectionsSize();
-            float[] xs = new float[size];
-            float[] ys = new float[size];
-            IntersectAPI.GetIntersections(xs, ys, size);
+            int size = GetIntersectionsSize();
+            double[] xs = new double[size];
+            double[] ys = new double[size];
+            GetIntersections(xs, ys, size);
             for (int i = 0; i < size; i++) {
-                float x = xs[i], y = ys[i];
+                double x = xs[i], y = ys[i];
 
                 // DrawCircleFill(x, y, 1);
                 listView.Items.Add(new ListItem("Intersection", x, y));
@@ -183,12 +195,12 @@ namespace GUI {
         }
 
         private void DrawSections() {
-            int size = IntersectAPI.GetSectionsSize();
-            int[] x1s = new int[size];
-            int[] y1s = new int[size];
-            int[] x2s = new int[size];
-            int[] y2s = new int[size];
-            IntersectAPI.GetSections(x1s, y1s, x2s, y2s, size);
+            int size;
+            int[] x1s;
+            int[] y1s;
+            int[] x2s;
+            int[] y2s;
+            GetSections(out x1s, out y1s, out x2s, out y2s, out size);
             for (int i = 0; i < size; i++) {
                 int x1 = x1s[i], y1 = y1s[i], x2 = x2s[i], y2 = y2s[i];
                 listView.Items.Add(new ListItem("Section", x1, y1, x2, y2));
@@ -198,12 +210,12 @@ namespace GUI {
         }
 
         private void DrawRays() {
-            int size = IntersectAPI.GetRaysSize();
-            int[] x1s = new int[size];
-            int[] y1s = new int[size];
-            int[] x2s = new int[size];
-            int[] y2s = new int[size];
-            IntersectAPI.GetRays(x1s, y1s, x2s, y2s, size);
+            int size;
+            int[] x1s;
+            int[] y1s;
+            int[] x2s;
+            int[] y2s;
+            GetRays(out x1s, out y1s, out x2s, out y2s, out size);
             for (int i = 0; i < size; i++) {
                 int x1 = x1s[i], y1 = y1s[i], x2 = x2s[i], y2 = y2s[i];
                 listView.Items.Add(new ListItem("Ray", x1, y1, x2, y2));
@@ -217,16 +229,16 @@ namespace GUI {
             double dy = y2 - y1;
             x2 = x1 + 1000 * dx;
             y2 = y1 + 1000 * dy;
-            DrawLineBasic(x1, y1, x2, y2, 1, color, 1);
+            DrawLineBasic(x1, y1, x2, y2, 1, color);
         }
 
         private void DrawLines() {
-            int size = IntersectAPI.GetLinesSize();
-            int[] x1s = new int[size];
-            int[] y1s = new int[size];
-            int[] x2s = new int[size];
-            int[] y2s = new int[size];
-            IntersectAPI.GetLines(x1s, y1s, x2s, y2s, size);
+            int size;
+            int[] x1s;
+            int[] y1s;
+            int[] x2s;
+            int[] y2s;
+            GetLines(out x1s, out y1s, out x2s, out y2s, out size);
             for (int i = 0; i < size; i++) {
                 int x1 = x1s[i], y1 = y1s[i], x2 = x2s[i], y2 = y2s[i];
 
@@ -240,8 +252,7 @@ namespace GUI {
             DrawRay(x2, y2, x1, y1);
         }
 
-        private void DrawLineBasic(double x1, double y1, double x2, double y2, double thickness, Color linecolor,
-            double yindex) {
+        private void DrawLineBasic(double x1, double y1, double x2, double y2, double thickness, Color linecolor) {
             y1 = -y1;
             y2 = -y2;
             Line l = new Line();
@@ -256,16 +267,16 @@ namespace GUI {
         }
 
         private void DrawIntersection(double x, double y) {
-            DrawLineBasic(x - 2, y - 2, x + 2, y + 2, 1, Colors.Orange, 10);
-            DrawLineBasic(x - 2, y + 2, x + 2, y - 2, 1, Colors.Orange, 10);
+            DrawLineBasic(x - 2, y - 2, x + 2, y + 2, 1, Colors.Orange);
+            DrawLineBasic(x - 2, y + 2, x + 2, y - 2, 1, Colors.Orange);
         }
 
         private void DrawCircles() {
-            int size = IntersectAPI.GetCirclesSize();
+            int size = GetCirclesSize();
             int[] xs = new int[size];
             int[] ys = new int[size];
             int[] rs = new int[size];
-            IntersectAPI.GetCircles(xs, ys, rs, size);
+            GetCircles(xs, ys, rs, size);
 
             for (int i = 0; i < size; i++) {
 
@@ -374,37 +385,42 @@ namespace GUI {
             }
         }
 
+        private string GetString(string name) {
+            return resman.GetString(name, CultureInfo.InvariantCulture);
+        }
+
         private void refrashInput() {
             if (label1 == null)
                 return;
             if (selectType.SelectedIndex == 0) {
-                label1.Text = "x1";
-                label2.Text = "y1";
-                label3.Text = "x2";
-                label4.Text = "y2";
+
+                label1.Text = GetString("x1");
+                label2.Text = GetString("y1");
+                label3.Text = GetString("x2");
+                label4.Text = GetString("y2");
                 label4.Visibility = Visibility.Visible;
                 text4.Visibility = Visibility.Visible;
             }
             else if (selectType.SelectedIndex == 1) {
-                label1.Text = "x1";
-                label2.Text = "y1";
-                label3.Text = "x2";
-                label4.Text = "y2";
+                label1.Text = GetString("x1");
+                label2.Text = GetString("y1");
+                label3.Text = GetString("x2");
+                label4.Text = GetString("y2");
                 label4.Visibility = Visibility.Visible;
                 text4.Visibility = Visibility.Visible;
             }
             else if (selectType.SelectedIndex == 2) {
-                label1.Text = "x1";
-                label2.Text = "y1";
-                label3.Text = "x2";
-                label4.Text = "y2";
+                label1.Text = GetString("x1");
+                label2.Text = GetString("y1");
+                label3.Text = GetString("x2");
+                label4.Text = GetString("y2");
                 label4.Visibility = Visibility.Visible;
                 text4.Visibility = Visibility.Visible;
             }
             else if (selectType.SelectedIndex == 3) {
-                label1.Text = "x";
-                label2.Text = "y";
-                label3.Text = "r";
+                label1.Text = GetString("x");
+                label2.Text = GetString("y");
+                label3.Text = GetString("r");
                 // label4.Content = "y2";
                 label4.Visibility = Visibility.Hidden;
                 text4.Visibility = Visibility.Hidden;
@@ -433,17 +449,17 @@ namespace GUI {
 
             public ListItem(string type, int x1, int y1, int x2, int y2) {
                 this.type = type;
-                this.x1 = x1.ToString();
-                this.y1 = y1.ToString();
-                this.x2 = x2.ToString();
-                this.y2 = y2.ToString();
+                this.x1 = x1.ToString(CultureInfo.InvariantCulture);
+                this.y1 = y1.ToString(CultureInfo.InvariantCulture);
+                this.x2 = x2.ToString(CultureInfo.InvariantCulture);
+                this.y2 = y2.ToString(CultureInfo.InvariantCulture);
             }
 
             public ListItem(string type, int x, int y, int r) {
                 this.type = type;
-                x1 = x.ToString();
-                y1 = y.ToString();
-                this.r = r.ToString();
+                x1 = x.ToString(CultureInfo.InvariantCulture);
+                y1 = y.ToString(CultureInfo.InvariantCulture);
+                this.r = r.ToString(CultureInfo.InvariantCulture);
             }
 
             public ListItem(string type, double x, double y) {
@@ -451,6 +467,315 @@ namespace GUI {
                 x1 = $"{x:F2}";
                 y1 = $"{y:F2}";
             }
+        }
+
+        private void RemoveLine(int x1, int y1, int x2, int y2)
+        {
+            try {
+                if (api_type == 0) NativeMethods.RemoveLine(x1, y1, x2, y2);
+                else NativeMethods.delLine('L', x1, y1, x2, y2);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void RemoveRay(int x1, int y1, int x2, int y2)
+        {
+            try {
+                if (api_type == 0) NativeMethods.RemoveRay(x1, y1, x2, y2);
+                else NativeMethods.delLine('R', x1, y1, x2, y2);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void RemoveSection(int x1, int y1, int x2, int y2)
+        {
+            try {
+                if (api_type == 0) NativeMethods.RemoveSection(x1, y1, x2, y2);
+                else NativeMethods.delLine('S', x1, y1, x2, y2);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void RemoveCircle(int x, int y, int r)
+        {
+            try {
+                if (api_type == 0) NativeMethods.RemoveCircle(x, y, r);
+                else NativeMethods.delCircle(x, y, r);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void AddLine(int x1, int y1, int x2, int y2)
+        {
+            try {
+                if (api_type == 0) NativeMethods.AddLine(x1, y1, x2, y2);
+                else NativeMethods.addLine('L', x1, y1, x2, y2);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void AddRay(int x1, int y1, int x2, int y2)
+        {
+            try {
+                if (api_type == 0) NativeMethods.AddRay(x1, y1, x2, y2);
+                else NativeMethods.addLine('R', x1, y1, x2, y2);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void AddSection(int x1, int y1, int x2, int y2)
+        {
+            try {
+                if (api_type == 0) NativeMethods.AddSection(x1, y1, x2, y2);
+                else NativeMethods.addLine('S', x1, y1, x2, y2);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void AddCircle(int x, int y, int r)
+        {
+            try
+            {
+                if (api_type == 0) NativeMethods.AddCircle(x, y, r);
+                else NativeMethods.addCircle(x, y, r);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+           
+        }
+
+        private int GetIntersectionsSize() {
+            try {
+                if (api_type == 0) return NativeMethods.GetIntersectionsSize();
+                else return NativeMethods.getResultOfIntersect();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                return 0;
+            }
+            
+        }
+
+        private void GetIntersections(double[] xs, double[] ys, int size) {
+            try
+            {
+                if (api_type == 0) NativeMethods.GetIntersections(xs, ys, size);
+                else NativeMethods.getPoint(xs, ys);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+           
+        }
+
+        private int GetCirclesSize() {
+            try
+            {
+                if (api_type == 0) return NativeMethods.GetCirclesSize();
+                else return NativeMethods.getNumOfCircles();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                return 0;
+            }
+           
+        }
+
+        private void GetCircles(int[] xs, int[] ys, int[] rs, int size) {
+            try {
+                if (api_type == 0) NativeMethods.GetCircles(xs, ys, rs, size);
+                else NativeMethods.getCircles(xs, ys, rs, size);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            
+        }
+
+        private void GetLines(out int[] x1s, out int[] y1s, out int[] x2s, out int[] y2s, out int size)
+        {
+            try {
+                if (api_type == 0)
+                {
+                    size = NativeMethods.GetLinesSize();
+                    x1s = new int[size];
+                    y1s = new int[size];
+                    x2s = new int[size];
+                    y2s = new int[size];
+                    NativeMethods.GetLines(x1s, y1s, x2s, y2s, size);
+                }
+                else
+                {
+                    int all_size = NativeMethods.getNumOfLines();
+                    char[] all_types = new char[all_size];
+                    int[] all_x1s = new int[all_size];
+                    int[] all_y1s = new int[all_size];
+                    int[] all_x2s = new int[all_size];
+                    int[] all_y2s = new int[all_size];
+                    size = 0;
+                    NativeMethods.getLines(all_types, all_x1s, all_y1s, all_x2s, all_y2s, all_size);
+                    for (int i = 0; i < all_size; i++)
+                    {
+                        if (all_types[i] == 'L') size++;
+                    }
+                    x1s = new int[size];
+                    y1s = new int[size];
+                    x2s = new int[size];
+                    y2s = new int[size];
+                    int p = 0;
+                    for (int i = 0; i < all_size; i++)
+                    {
+                        if (all_types[i] == 'L')
+                        {
+                            x1s[p] = all_x1s[i];
+                            y1s[p] = all_y1s[i];
+                            x2s[p] = all_x2s[i];
+                            y2s[p] = all_y2s[i];
+                            p++;
+                        }
+                    }
+                }
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+
+            x1s = null;
+            x2s = null;
+            y1s = null;
+            y2s = null;
+            size = 0;
+        }
+
+        private void GetRays(out int[] x1s, out int[] y1s, out int[] x2s, out int[] y2s, out int size)
+        {
+            try {
+                if (api_type == 0)
+                {
+                    size = NativeMethods.GetRaysSize();
+                    x1s = new int[size];
+                    y1s = new int[size];
+                    x2s = new int[size];
+                    y2s = new int[size];
+                    NativeMethods.GetRays(x1s, y1s, x2s, y2s, size);
+                }
+                else
+                {
+                    int all_size = NativeMethods.getNumOfLines();
+                    char[] all_types = new char[all_size];
+                    int[] all_x1s = new int[all_size];
+                    int[] all_y1s = new int[all_size];
+                    int[] all_x2s = new int[all_size];
+                    int[] all_y2s = new int[all_size];
+                    size = 0;
+                    NativeMethods.getLines(all_types, all_x1s, all_y1s, all_x2s, all_y2s, all_size);
+                    for (int i = 0; i < all_size; i++)
+                    {
+                        if (all_types[i] == 'R') size++;
+                    }
+                    x1s = new int[size];
+                    y1s = new int[size];
+                    x2s = new int[size];
+                    y2s = new int[size];
+                    int p = 0;
+                    for (int i = 0; i < all_size; i++)
+                    {
+                        if (all_types[i] == 'R')
+                        {
+                            x1s[p] = all_x1s[i];
+                            y1s[p] = all_y1s[i];
+                            x2s[p] = all_x2s[i];
+                            y2s[p] = all_y2s[i];
+                            p++;
+                        }
+                    }
+                }
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            x1s = null;
+            x2s = null;
+            y1s = null;
+            y2s = null;
+            size = 0;
+        }
+
+        private void GetSections(out int[] x1s, out int[] y1s, out int[] x2s, out int[] y2s, out int size)
+        {
+            try
+            {
+                if (api_type == 0)
+                {
+                    size = NativeMethods.GetSectionsSize();
+                    x1s = new int[size];
+                    y1s = new int[size];
+                    x2s = new int[size];
+                    y2s = new int[size];
+                    NativeMethods.GetSections(x1s, y1s, x2s, y2s, size);
+                }
+                else
+                {
+                    int all_size = NativeMethods.getNumOfLines();
+                    char[] all_types = new char[all_size];
+                    int[] all_x1s = new int[all_size];
+                    int[] all_y1s = new int[all_size];
+                    int[] all_x2s = new int[all_size];
+                    int[] all_y2s = new int[all_size];
+                    size = 0;
+                    NativeMethods.getLines(all_types, all_x1s, all_y1s, all_x2s, all_y2s, all_size);
+                    for (int i = 0; i < all_size; i++)
+                    {
+                        if (all_types[i] == 'S') size++;
+                    }
+                    x1s = new int[size];
+                    y1s = new int[size];
+                    x2s = new int[size];
+                    y2s = new int[size];
+                    int p = 0;
+                    for (int i = 0; i < all_size; i++)
+                    {
+                        if (all_types[i] == 'S')
+                        {
+                            x1s[p] = all_x1s[i];
+                            y1s[p] = all_y1s[i];
+                            x2s[p] = all_x2s[i];
+                            y2s[p] = all_y2s[i];
+                            p++;
+                        }
+                    }
+                }
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            x1s = null;
+            x2s = null;
+            y1s = null;
+            y2s = null;
+            size = 0;
         }
 
         private void ButtonRemove(object sender, RoutedEventArgs e) {
@@ -462,22 +787,22 @@ namespace GUI {
             //
             if (selectType.SelectedIndex == 0)
             {
-                IntersectAPI.RemoveLine(int.Parse(x1), int.Parse(y1), int.Parse(x2), int.Parse(y2));
+                RemoveLine(IntParse(x1), IntParse(y1), IntParse(x2), IntParse(y2));
             }
             else if (selectType.SelectedIndex == 3)
             {
-                IntersectAPI.RemoveCircle(int.Parse(x1), int.Parse(y1), int.Parse(r));
+                RemoveCircle(IntParse(x1), IntParse(y1), IntParse(r));
             }
             else if (selectType.SelectedIndex == 1)
             {
-                IntersectAPI.RemoveRay(int.Parse(x1), int.Parse(y1), int.Parse(x2), int.Parse(y2));
+                RemoveRay(IntParse(x1), IntParse(y1), IntParse(x2), IntParse(y2));
             }
             else if (selectType.SelectedIndex == 2)
             {
-                IntersectAPI.RemoveSection(int.Parse(x1), int.Parse(y1), int.Parse(x2), int.Parse(y2));
+                RemoveSection(IntParse(x1), IntParse(y1), IntParse(x2), IntParse(y2));
             }
             // IntersectAPI.Clear();
-            int size = IntersectAPI.GetIntersectionsSize();
+            int size = GetIntersectionsSize();
 
             Draw();
         }
@@ -498,8 +823,13 @@ namespace GUI {
             }
             string txtFile = openFileDialog.FileName;
             string text = System.IO.File.ReadAllText(txtFile);
-            IntersectAPI.Input(text);
-            int size = IntersectAPI.GetIntersectionsSize();
+            try {
+                NativeMethods.Input(text);
+            }
+            catch (Exception exception) {
+                Console.WriteLine(exception);
+            }
+            int size = GetIntersectionsSize();
             Draw();
         }
     }

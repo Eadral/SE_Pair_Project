@@ -800,10 +800,10 @@ extern "C" {
         return int(__solver.points_.size());
     }
 
-    INTERSECT_API void GetIntersections(float* xs, float* ys, int size) {
+    INTERSECT_API void GetIntersections(double* xs, double* ys, int size) {
         for (int i = 0; i < size; i++) {
-            xs[i] = float(__solver.points_[i].x);
-            ys[i] = float(__solver.points_[i].y);
+            xs[i] = __solver.points_[i].x;
+            ys[i] = __solver.points_[i].y;
         }
     }
 

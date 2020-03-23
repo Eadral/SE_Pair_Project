@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace GUI
 {
-    class IntersectAPI
+    internal class NativeMethods
     {
         [DllImport("intersect_core.dll")]
         public static extern void Clear();
@@ -66,6 +66,41 @@ namespace GUI
         public static extern int GetIntersectionsSize();
 
         [DllImport("intersect_core.dll")]
-        public static extern void GetIntersections(float[] xs, float[] ys, int size);
+        public static extern void GetIntersections(double[] xs, double[] ys, int size);
+
+
+
+        [DllImport("intersect_core.dll")]
+        public static extern void resetRes();
+
+        [DllImport("intersect_core.dll")]
+        public static extern int getResultOfIntersect();
+
+        [DllImport("intersect_core.dll")]
+        public static extern void getPoint(double[] x, double[] y);
+
+        [DllImport("intersect_core.dll")]
+        public static extern void addLine(char l, int x1, int y1, int x2, int y2);
+
+        [DllImport("intersect_core.dll")]
+        public static extern void delLine(char l, int x1, int y1, int x2, int y2);
+
+        [DllImport("intersect_core.dll")]
+        public static extern void addCircle(int x, int y, int r);
+
+        [DllImport("intersect_core.dll")]
+        public static extern void delCircle(int x, int y, int r);
+
+        [DllImport("intersect_core.dll")]
+        public static extern int getNumOfLines();
+
+        [DllImport("intersect_core.dll")]
+        public static extern void getLines(char[] flag, int[] x1, int[] y1, int[] x2, int[] y2, int size);
+
+        [DllImport("intersect_core.dll")]
+        public static extern int getNumOfCircles();
+
+        [DllImport("intersect_core.dll")]
+        public static extern void getCircles(int[] x, int[] y, int[] r, int size);
     }
 }

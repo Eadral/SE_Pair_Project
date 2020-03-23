@@ -161,6 +161,6 @@ extern "C" {
 
     INTERSECT_API int GetIntersectionsSize();
 
-    INTERSECT_API void GetIntersections(float* xs, float* ys, int size);
+    INTERSECT_API void GetIntersections(double* xs, double* ys, int size);
 
 }

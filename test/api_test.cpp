@@ -70,7 +70,7 @@ namespace UnitTest
 			AddCircle(2, 3, 4);
 			RemoveCircle(2, 3, 4);
 			Assert::AreEqual(1, GetCirclesSize());
-			int x1s[5], y1s[5], x2s[5], y2s[5];
+			int x1s[5], y1s[5], x2s[5];
 			GetCircles(x1s, y1s, x2s, 1);
 			Assert::AreEqual(1, x1s[0]);
 			Assert::AreEqual(2, y1s[0]);
