@@ -150,6 +150,23 @@ R 1 1 3 4
 			Assert::ExpectException<CoreException>([&] {solver.Solve(); });
 		}
 
+
+		TEST_METHOD(CircleCircleInfinity)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			sin << R"(
+2
+C 0 2 1
+C 0 2 1
+)" << endl;
+
+			Assert::ExpectException<CoreException>([&] {solver.Solve(); });
+		}
+
 		TEST_METHOD(LineLineExceedTest)
 		{
 			stringstream sin;
@@ -201,6 +218,144 @@ L 0 0 0 1
 C 0 0 1
 C 1 0 1
 C -1 0 1
+)" << endl;
+
+			int ret = solver.Solve();
+
+			Assert::AreEqual((int)MaxPointsExceed, ret);
+		}
+
+		TEST_METHOD(LineRayExceedTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout, 2);
+
+			sin << R"(
+4
+L 0 0 0 1
+L 0 0 1 0 
+L 1 0 1 1
+R 0 1 1 1
+)" << endl;
+
+			int ret = solver.Solve();
+
+			Assert::AreEqual((int)MaxPointsExceed, ret);
+		}
+
+		TEST_METHOD(LineSectionExceedTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout, 2);
+
+			sin << R"(
+4
+L 0 0 0 1
+L 0 0 1 0 
+L 1 0 1 1
+S 0 1 1 1
+)" << endl;
+
+			int ret = solver.Solve();
+
+			Assert::AreEqual((int)MaxPointsExceed, ret);
+		}
+
+		TEST_METHOD(RaySectionExceedTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout, 2);
+
+			sin << R"(
+4
+R 0 0 0 1
+R 0 0 1 0 
+R 1 0 1 1
+S 0 1 1 1
+)" << endl;
+
+			int ret = solver.Solve();
+
+			Assert::AreEqual((int)MaxPointsExceed, ret);
+		}
+
+		TEST_METHOD(RayCircleExceedTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout, 2);
+
+			sin << R"(
+3
+C 0 0 1
+R 0 0 1 0
+R 0 0 0 1
+)" << endl;
+
+			int ret = solver.Solve();
+
+			Assert::AreEqual((int)MaxPointsExceed, ret);
+		}
+
+		TEST_METHOD(SectionCircleExceedTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout, 2);
+
+			sin << R"(
+3
+C 0 0 1
+S 0 0 1 0
+S 0 0 0 1
+)" << endl;
+
+			int ret = solver.Solve();
+
+			Assert::AreEqual((int)MaxPointsExceed, ret);
+		}
+
+		TEST_METHOD(RayRayExceedTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout, 2);
+
+			sin << R"(
+4
+R 0 0 0 1
+R 0 0 1 0 
+R 1 0 1 1
+R 0 1 1 1
+)" << endl;
+
+			int ret = solver.Solve();
+
+			Assert::AreEqual((int)MaxPointsExceed, ret);
+		}
+
+		TEST_METHOD(SectionSectionExceedTest)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout, 2);
+
+			sin << R"(
+4
+S 0 0 0 1
+S 0 0 1 0 
+S 1 0 1 1
+S 0 1 1 1
 )" << endl;
 
 			int ret = solver.Solve();

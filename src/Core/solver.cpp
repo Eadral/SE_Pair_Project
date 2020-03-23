@@ -1,10 +1,9 @@
 #include "solver.h"
 
 inline int Solver::Solve() {
-    auto err = Input();
-    if (err) return err;
+    Input();
 
-     err = GetPointsInLines();
+    auto err = GetPointsInLines();
     if (err) return err;
     err = GetPointsInRays();
     if (err) return err;
@@ -29,36 +28,16 @@ inline int Solver::Solve() {
 }
 
 inline int Solver::SolveWithOutIO() {
-    // try {
-    //     auto err = Input();
-    //     if (err) return err;
-
-        auto err = GetPointsInLines();
-        if (err) return err;
-        err = GetPointsInRays();
-        if (err) return err;
-        err = GetPointsInSections();
-        if (err) return err;
-        err = GetPointsInCircles();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndRays();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndSections();
-        if (err) return err;
-        err = GetPointsBetweenLinesAndCircles();
-        if (err) return err;
-        err = GetPointsBetweenRaysAndSections();
-        if (err) return err;
-        err = GetPointsBetweenRaysAndCircles();
-        if (err) return err;
-        err = GetPointsBetweenSectionsAndCircles();
-        if (err) return err;
-    //     out_ << GetAns() << endl;
-    // }
-    // catch (CoreException e) {
-    //     std::cout << e.showExceptionMessage() << endl;
-    //     return InvalidInput;
-    // }
+        GetPointsInLines();
+        GetPointsInRays();
+        GetPointsInSections();
+        GetPointsInCircles();
+        GetPointsBetweenLinesAndRays();
+        GetPointsBetweenLinesAndSections();
+        GetPointsBetweenLinesAndCircles();
+        GetPointsBetweenRaysAndSections();
+        GetPointsBetweenRaysAndCircles();
+        GetPointsBetweenSectionsAndCircles();
     return 0;
 }
 
@@ -566,18 +545,16 @@ inline void Solver::RaySectionIntersect(const Ray& r, const Section& s) {
                 const auto s_xmin = std::min(s.x1, s.x2);
                 const auto s_xmax = std::max(s.x1, s.x2);
                 if (r.dx < 0) {
-                    if (s_xmax > r.x1) {
+                    if (s_xmax > r.x1) 
                         throw CoreException(InfiniteIntersectionsFound);
-                    }
                     else if (s_xmax == r.x1) {
                         points_.emplace_back(r.x1, r.y1);
                     }
                     return;
                 }
                 else {
-                    if (s_xmin < r.x1) {
+                    if (s_xmin < r.x1) 
                         throw CoreException(InfiniteIntersectionsFound);
-                    }
                     else if (s_xmin == r.x1) {
                         points_.emplace_back(r.x1, r.y1);
                     }
@@ -588,18 +565,16 @@ inline void Solver::RaySectionIntersect(const Ray& r, const Section& s) {
                 const auto s_ymin = std::min(s.y1, s.y2);
                 const auto s_ymax = std::max(s.y1, s.y2);
                 if (r.dy < 0) {
-                    if (s_ymax > r.y1) {
+                    if (s_ymax > r.y1) 
                         throw CoreException(InfiniteIntersectionsFound);
-                    }
                     else if (s_ymax == r.y1) {
                         points_.emplace_back(r.x1, r.y1);
                     }
                     return;
                 }
                 else {
-                    if (s_ymin < r.y1) {
+                    if (s_ymin < r.y1) 
                         throw CoreException(InfiniteIntersectionsFound);
-                    }
                     else if (s_ymin == r.y1) {
                         points_.emplace_back(r.x1, r.y1);
                     }

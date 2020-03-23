@@ -160,5 +160,38 @@ namespace UnitTest
 			Assert::AreEqual(solver.GetAns(), 2);
 		}
 
+		TEST_METHOD(PointOnRay) {
+			Assert::AreEqual(false, Solver::PointOnRay(0, 0, Ray(1, 1, 1, 1)));
+			Assert::AreEqual(true, Solver::PointOnRay(1, 0, Ray(1, 1, 1, 0)));
+		}
+
+		TEST_METHOD(PointOnSection) {
+			Assert::AreEqual(true, Solver::PointOnSection(1.5, 1.5, Section(2, 2, 1, 1)));
+			Assert::AreEqual(false, Solver::PointOnSection(-1.5, 1.5, Section(2, 2, 1, 1)));
+			Assert::AreEqual(true, Solver::PointOnSection(1, 1.5, Section(1, 2, 1, 1)));
+			Assert::AreEqual(false, Solver::PointOnSection(-1, -1.5, Section(1, 2, 1, 1)));
+			Assert::AreEqual(false, Solver::PointOnSection(-1.5, 1.5, Section(1, 1, 1, 1)));
+		}
+
+		TEST_METHOD(RayRayIntersectX)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			solver.RayRayIntersect(
+				Ray(0, 0, 1, 0),
+				Ray(0, 0, -1, 0)
+			);
+
+			solver.RayRayIntersect(
+				Ray(0, 0, 0, 1),
+				Ray(0, 0, 0, -1)
+			);
+
+			Assert::AreEqual(solver.GetAns(), 1);
+		}
+
 	};
 }

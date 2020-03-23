@@ -54,5 +54,35 @@ namespace UnitTest
 				Section(1, 1, 3, 3)
 			); });
 		}
+
+		TEST_METHOD(CollineationA)
+		{
+			stringstream sin;
+			stringstream sout;
+
+			Solver solver(sin, sout);
+
+			solver.SectionSectionIntersect(
+				Section(0, 0, 1, 0),
+				Section(0, 0, -1, 0)
+			);
+
+			solver.SectionSectionIntersect(
+				Section(0, 1, 0, 0),
+				Section(-1, 0, 0, 0)
+			);
+
+			solver.SectionSectionIntersect(
+				Section(0, 0, 0, 1),
+				Section(0, 0, 0, -1)
+			);
+
+			solver.SectionSectionIntersect(
+				Section(0, 1, 0, 0),
+				Section(0, -1, 0, 0)
+			);
+
+			Assert::AreEqual(solver.GetAns(), 1);
+		}
 	};
 }

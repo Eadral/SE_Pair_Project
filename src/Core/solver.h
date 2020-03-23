@@ -93,9 +93,9 @@ public:
 
     int GetPointsBetweenSectionsAndCircles();
 
-    INTERSECT_API bool PointOnRay(const double& x, const double& y, const Ray& r);
+    INTERSECT_API static bool PointOnRay(const double& x, const double& y, const Ray& r);
 
-    INTERSECT_API bool PointOnSection(const double& x, const double& y, const Section& s);
+    INTERSECT_API static bool PointOnSection(const double& x, const double& y, const Section& s);
 
     void Optimize();
 
