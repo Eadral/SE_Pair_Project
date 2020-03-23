@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "intersect_dll.h"
+
 #define MIN_COORDINATE -99999
 #define MAX_COORDINATE 99999
 #define MIN_RADIUS 1
@@ -22,7 +24,7 @@ enum Exception {
 	ElementToDeleteNotFound = 600
 };
 
-std::string ExpectionString(int exc_code);
+INTERSECT_API std::string ExpectionString(int exc_code);
 
 struct CoreException : public std::exception
 {

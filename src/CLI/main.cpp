@@ -28,9 +28,15 @@ int main(int argc, char* argv[]) {
     if (!fin.is_open()) {
         exit(-9);
     }
+    int err;
+    try {
+        Solver solver(fin, fout);
+        err = solver.Solve();
+    } catch (CoreException &e) {
+        std::cerr << e.showExceptionMessage() << endl;
+        exit(e.exc_code);
+    }
     
-    Solver solver(fin, fout);
-    const auto err = solver.Solve();
     if (err) {
         std::cerr << ErrorString(err) << endl;
         exit(err);

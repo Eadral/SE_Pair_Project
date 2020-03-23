@@ -4,7 +4,7 @@ inline int Solver::Solve() {
     auto err = Input();
     if (err) return err;
 
-    err = GetPointsInLines();
+     err = GetPointsInLines();
     if (err) return err;
     err = GetPointsInRays();
     if (err) return err;
@@ -72,7 +72,7 @@ inline int Solver::Input() {
     while (getline(in_, line_)) {
         if (line_.size() != 0) break;
     }
-    std::cout << line_ << endl;
+    // std::cout << line_ << endl;
     if (!isDegital(line_)) {
         throw CoreException(WrongFormatOfN);
         return InvalidInput;
@@ -292,7 +292,8 @@ inline void Solver::LineLineIntersect(const Line& a, const Line& b) {
     const auto denominator =
         a.dx * b.dy - b.dx * a.dy;
     if (denominator == 0) {
-        if (a.x2y1_x1y2 - b.x2y1_x1y2 == 0) {
+        if (a.x2y1_x1y2 * b.dx - b.x2y1_x1y2 * a.dx == 0
+            && a.x2y1_x1y2 * b.dy - b.x2y1_x1y2 * a.dy == 0) {
             throw CoreException(InfiniteIntersectionsFound);
         }
         return;
@@ -313,7 +314,7 @@ inline void Solver::RayRayIntersect(const Ray& a, const Ray& b) {
     const auto denominator =
         a.dx * b.dy - b.dx * a.dy;
     if (denominator == 0) {
-        if (a.x2y1_x1y2 - b.x2y1_x1y2 == 0) {
+        if (a.x2y1_x1y2 * b.dx - b.x2y1_x1y2 * a.dx == 0 && a.x2y1_x1y2 * b.dy - b.x2y1_x1y2 * a.dy == 0) {
             if (a.dx * b.dx < 0 || a.dy * b.dy < 0) {
                 if (a.x1 == b.x1 && a.y1 == b.y1) {
                     //same start point, different direction
@@ -348,7 +349,7 @@ inline void Solver::SectionSectionIntersect(const Section& a, const Section& b) 
         a.dx * b.dy - b.dx * a.dy;
     if (denominator == 0) {
         //TODO: modify exception condition
-        if (a.x2y1_x1y2 - b.x2y1_x1y2 == 0) {
+        if (a.x2y1_x1y2 * b.dx - b.x2y1_x1y2 * a.dx == 0 && a.x2y1_x1y2 * b.dy - b.x2y1_x1y2 * a.dy == 0) {
             if (a.dx != 0) {
                 const auto a_xmin = std::min(a.x1, a.x2);
                 const auto a_xmax = std::max(a.x1, a.x2);
@@ -471,7 +472,7 @@ inline void Solver::LineRayIntersect(const Line& l, const Ray& r) {
     const auto denominator =
         l.dx * r.dy - r.dx * l.dy;
     if (denominator == 0) {
-        if (l.x2y1_x1y2 - r.x2y1_x1y2 == 0) {
+        if (l.x2y1_x1y2 * r.dx - r.x2y1_x1y2 * l.dx == 0 && l.x2y1_x1y2 * r.dy - r.x2y1_x1y2 * l.dy == 0) {
             throw CoreException(InfiniteIntersectionsFound);
         }
         return;
@@ -492,7 +493,7 @@ inline void Solver::LineSectionIntersect(const Line& l, const Section& s) {
     const auto denominator =
         l.dx * s.dy - s.dx * l.dy;
     if (denominator == 0) {
-        if (l.x2y1_x1y2 - s.x2y1_x1y2 == 0) {
+        if (l.x2y1_x1y2 * s.dx - s.x2y1_x1y2 * l.dx == 0 && l.x2y1_x1y2 * s.dy - s.x2y1_x1y2 * l.dy == 0) {
             throw CoreException(InfiniteIntersectionsFound);
         }
         return;

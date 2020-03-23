@@ -11,7 +11,6 @@ bin/output.txt
 *.obj
 *.log
 *.txt
-*.dll
 *.exp
 *.iobj
 *.ipdb
@@ -25,3 +24,5 @@ bin/output.txt
 *.sarif
 /src/GUI/bin/Release/netcoreapp3.1
 /src/GUI/obj
+/x64/UnitTest/UnitTest.dll
+/x64/Release/UnitTest.dll
