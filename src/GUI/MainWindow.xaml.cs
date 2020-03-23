@@ -49,7 +49,7 @@ namespace GUI {
             {
                 NativeMethods.Clear();
             }
-            catch (ExternalException e)
+            catch (Exception)
             {
                 try
                 {
@@ -629,7 +629,7 @@ namespace GUI {
                 else
                 {
                     int all_size = NativeMethods.getNumOfLines();
-                    char[] all_types = new char[all_size];
+                    int[] all_types = new int[all_size];
                     int[] all_x1s = new int[all_size];
                     int[] all_y1s = new int[all_size];
                     int[] all_x2s = new int[all_size];
@@ -660,13 +660,14 @@ namespace GUI {
             }
             catch (Exception e) {
                 Console.WriteLine(e);
+                x1s = null;
+                x2s = null;
+                y1s = null;
+                y2s = null;
+                size = 0;
             }
 
-            x1s = null;
-            x2s = null;
-            y1s = null;
-            y2s = null;
-            size = 0;
+            
         }
 
         private void GetRays(out int[] x1s, out int[] y1s, out int[] x2s, out int[] y2s, out int size)
@@ -684,7 +685,7 @@ namespace GUI {
                 else
                 {
                     int all_size = NativeMethods.getNumOfLines();
-                    char[] all_types = new char[all_size];
+                    int[] all_types = new int[all_size];
                     int[] all_x1s = new int[all_size];
                     int[] all_y1s = new int[all_size];
                     int[] all_x2s = new int[all_size];
@@ -715,12 +716,13 @@ namespace GUI {
             }
             catch (Exception e) {
                 Console.WriteLine(e);
+                x1s = null;
+                x2s = null;
+                y1s = null;
+                y2s = null;
+                size = 0;
             }
-            x1s = null;
-            x2s = null;
-            y1s = null;
-            y2s = null;
-            size = 0;
+           
         }
 
         private void GetSections(out int[] x1s, out int[] y1s, out int[] x2s, out int[] y2s, out int size)
@@ -739,7 +741,7 @@ namespace GUI {
                 else
                 {
                     int all_size = NativeMethods.getNumOfLines();
-                    char[] all_types = new char[all_size];
+                    int[] all_types = new int[all_size];
                     int[] all_x1s = new int[all_size];
                     int[] all_y1s = new int[all_size];
                     int[] all_x2s = new int[all_size];
@@ -770,12 +772,13 @@ namespace GUI {
             }
             catch (Exception e) {
                 Console.WriteLine(e);
+                x1s = null;
+                x2s = null;
+                y1s = null;
+                y2s = null;
+                size = 0;
             }
-            x1s = null;
-            x2s = null;
-            y1s = null;
-            y2s = null;
-            size = 0;
+            
         }
 
         private void ButtonRemove(object sender, RoutedEventArgs e) {

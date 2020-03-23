@@ -153,110 +153,110 @@ inline bool Solver::PointOnSection(const double& x, const double& y, const Secti
 
 inline int Solver::GetPointsInLines() {
     for (auto i = 0; i < int(lines_.size()) - 1; i++) {
-        for (auto j = i + 1; j < lines_.size(); j++) {
+        for (auto j = i + 1; j < int(lines_.size()); j++) {
             LineLineIntersect(lines_.at(i), lines_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsInRays() {
     for (auto i = 0; i < int(rays_.size()) - 1; i++) {
-        for (auto j = i + 1; j < rays_.size(); j++) {
+        for (auto j = i + 1; j < int(rays_.size()); j++) {
             RayRayIntersect(rays_.at(i), rays_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsInSections() {
     for (auto i = 0; i < int(sections_.size()) - 1; i++) {
-        for (auto j = i + 1; j < sections_.size(); j++) {
+        for (auto j = i + 1; j < int(sections_.size()); j++) {
             SectionSectionIntersect(sections_.at(i), sections_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsInCircles() {
     for (auto i = 0; i < int(circles_.size()) - 1; i++) {
-        for (auto j = i + 1; j < circles_.size(); j++) {
+        for (auto j = i + 1; j < int(circles_.size()); j++) {
             CircleCircleIntersect(circles_.at(i), circles_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsBetweenLinesAndRays() {
     for (auto i = 0; i < int(lines_.size()); i++) {
-        for (auto j = 0; j < rays_.size(); j++) {
+        for (auto j = 0; j < int(rays_.size()); j++) {
             LineRayIntersect(lines_.at(i), rays_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsBetweenLinesAndSections() {
     for (auto i = 0; i < int(lines_.size()); i++) {
-        for (auto j = 0; j < sections_.size(); j++) {
+        for (auto j = 0; j < int(sections_.size()); j++) {
             LineSectionIntersect(lines_.at(i), sections_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsBetweenLinesAndCircles() {
-    for (auto i = 0; i < lines_.size(); i++) {
-        for (auto j = 0; j < circles_.size(); j++) {
+    for (auto i = 0; i < int(lines_.size()); i++) {
+        for (auto j = 0; j < int(circles_.size()); j++) {
             LineCircleIntersect(lines_.at(i), circles_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsBetweenRaysAndSections() {
-    for (auto i = 0; i < rays_.size(); i++) {
-        for (auto j = 0; j < sections_.size(); j++) {
+    for (auto i = 0; i < int(rays_.size()); i++) {
+        for (auto j = 0; j < int(sections_.size()); j++) {
             RaySectionIntersect(rays_.at(i), sections_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsBetweenRaysAndCircles() {
-    for (auto i = 0; i < rays_.size(); i++) {
-        for (auto j = 0; j < circles_.size(); j++) {
+    for (auto i = 0; i < int(rays_.size()); i++) {
+        for (auto j = 0; j < int(circles_.size()); j++) {
             RayCircleIntersect(rays_.at(i), circles_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }
 
 inline int Solver::GetPointsBetweenSectionsAndCircles() {
-    for (auto i = 0; i < sections_.size(); i++) {
-        for (auto j = 0; j < circles_.size(); j++) {
+    for (auto i = 0; i < int(sections_.size()); i++) {
+        for (auto j = 0; j < int(circles_.size()); j++) {
             SectionCircleIntersect(sections_.at(i), circles_.at(j));
         }
-        if (points_.size() > kMaxN_) Optimize();
-        if (points_.size() > kMaxN_) return MaxPointsExceed;
+        if (int(points_.size()) > kMaxN_) Optimize();
+        if (int(points_.size()) > kMaxN_) return MaxPointsExceed;
     }
     return 0;
 }

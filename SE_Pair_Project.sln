@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLI", "src\CLI\CLI.vcxproj"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "src\Core\Core.vcxproj", "{819AFF97-3D5D-4A41-9310-CF261939B83B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "src\GUI\GUI.csproj", "{9E2C4678-8E44-4977-BBF8-31AE76323080}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "src\GUI\GUI.csproj", "{9E2C4678-8E44-4977-BBF8-31AE76323080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

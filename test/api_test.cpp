@@ -16,10 +16,10 @@ namespace UnitTest
 			char buf[] = "2\nL 0 0 1 1\nL0 1 1 0\n";
 			Input(buf);
 			Assert::AreEqual(1, GetIntersectionsSize());
-			float xs[5], ys[5];
+			double xs[5], ys[5];
 			GetIntersections(xs, ys, 1);
-			Assert::AreEqual(0.5f, xs[0]);
-			Assert::AreEqual(0.5f, ys[0]);
+			Assert::AreEqual(0.5, xs[0]);
+			Assert::AreEqual(0.5, ys[0]);
         }
 
 		TEST_METHOD(LineTest) {

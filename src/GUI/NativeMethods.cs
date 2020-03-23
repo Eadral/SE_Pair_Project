@@ -95,7 +95,7 @@ namespace GUI
         public static extern int getNumOfLines();
 
         [DllImport("intersect_core.dll")]
-        public static extern void getLines(char[] flag, int[] x1, int[] y1, int[] x2, int[] y2, int size);
+        public static extern void getLines(int[] flag, int[] x1, int[] y1, int[] x2, int[] y2, int size);
 
         [DllImport("intersect_core.dll")]
         public static extern int getNumOfCircles();

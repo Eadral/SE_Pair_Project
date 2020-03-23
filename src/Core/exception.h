@@ -40,7 +40,7 @@ struct CoreException : public std::exception
 };
 
 inline bool isDegital(const std::string str) {
-	for (int i = 0; i < str.size(); i++) {
+	for (int i = 0; i < int(str.size()); i++) {
 		if (str.at(i) == '-' && str.size() > 1)
 			continue;
 		if (str.at(i) > '9' || str.at(i) < '0')
@@ -51,13 +51,13 @@ inline bool isDegital(const std::string str) {
 
 inline std::vector<int> readPara(const int argc, const std::string line) {
 	std::vector<int> ret;
-	for (int i = 1; i < line.size(); i++) {
+	for (int i = 1; i < int(line.size()); i++) {
 		if (line.at(i) == ' ') continue;
 		if (isdigit(line.at(i)) || line.at(i) == '-') {
 			std::string temp = "";
 			temp.push_back(line.at(i));
 			i++;
-			while (i < line.size() && line.at(i) != ' ') {
+			while (i < int(line.size()) && line.at(i) != ' ') {
 				temp.push_back(line.at(i));
 				i++;
 			}
