@@ -19,7 +19,7 @@
 
 `bin\GUI.exe`  
 
-![image-20200324111051492](C:\Study\S6\Software\SE_Pair_Project\README.assets\image-20200324111051492.png)
+![image-20200324111051492](http://github.com/itmyhome2013/readme_add_pic/raw/master/README.assets/image-20200324111051492.png)
 
 - Import：导入文本描述文件
 - Add：添加图形
