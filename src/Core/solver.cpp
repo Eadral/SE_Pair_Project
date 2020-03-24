@@ -619,7 +619,7 @@ inline void Solver::RayCircleIntersect(const Ray& ray, const Circle& c) {
         auto y = (-d * dx) / dr2;
         x += c.x;
         y += c.y;
-        points_.emplace_back(x, y);
+        if (PointOnRay(x, y, ray)) points_.emplace_back(x, y);
     }
     else {
         const auto sqrt_delta = sqrt(delta);
@@ -660,7 +660,7 @@ inline void Solver::SectionCircleIntersect(const Section& s, const Circle& c) {
         auto y = (-d * dx) / dr2;
         x += c.x;
         y += c.y;
-        points_.emplace_back(x, y);
+        if (PointOnSection(x, y, s)) points_.emplace_back(x, y);
     }
     else {
         const auto sqrt_delta = sqrt(delta);
