@@ -19,7 +19,7 @@
 
 `bin\GUI.exe`  
 
-![image-20200324111051492](http://github.com/Eadral/SE_Pair_Project/raw/master/README.assets/image-20200324111051492.png)
+![image-20200324111051492](https://raw.githubusercontent.com/Eadral/SE_Pair_Project/master/README.assets/image-20200324111051492.png)
 
 - Import：导入文本描述文件
 - Add：添加图形
