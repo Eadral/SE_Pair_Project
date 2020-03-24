@@ -1,20 +1,34 @@
-# Software Engineering  Course - Pair Project
+# 软件工程结对项目
 
-[Homework Page](https://edu.cnblogs.com/campus/buaa/BUAA_SE_2020_LJ/homework/10429) 
+  [作业要求](https://edu.cnblogs.com/campus/buaa/BUAA_SE_2020_LJ/homework/10466)
 
-- ## Features
+## 功能
 
 
-- A console program that can solve the intersection between simple geometric shapes.
+- `bin\intersect.exe`  CLI程序，计算交点数量
+- `bin\GUI.exe`  GUI程序
 
-## Usage
+## 使用方法
 
-| **Option** | **Argument Explanation**                                     | **Example**                                |
-| :--------- | :----------------------------------------------------------- | :----------------------------------------- |
-| `-i `      | An argument to indicate the path to the input file (absolute or relative). | `intersect.exe -i input.txt -o output.txt` |
-| `-o `      | An argument to indicate the path to the output file (absolute or relative). | `intersect.exe -i input.txt -o output.txt` |
+`bin\intersect.exe`
 
-## Exception Definition
+| 选项  | 参数                       | 样例                                       |
+| :---- | :------------------------- | :----------------------------------------- |
+| `-i ` | 输入文件路径（相对或绝对） | `intersect.exe -i input.txt -o output.txt` |
+| `-o ` | 输出文件路径（相对或绝对） | `intersect.exe -i input.txt -o output.txt` |
+
+`bin\GUI.exe`  
+
+![image-20200324111051492](C:\Study\S6\Software\SE_Pair_Project\README.assets\image-20200324111051492.png)
+
+- Import：导入文本描述文件
+- Add：添加图形
+- Remove：删除图形 （可在列表中进行选择）
+- 左侧画布支持鼠标滚轮缩放以及拖拽
+
+
+
+## 异常定义
 
 | 异常代码 | 异常名                         | 异常说明                                                     |
 | -------- | ------------------------------ | ------------------------------------------------------------ |
@@ -30,7 +44,7 @@
 | E500     | InfiniteIntersectionsFound     | 有无穷多交点                                                 |
 | E600     | ElementToDeleteNotFound        | 找不到要删除的元素                                           |
 
-## Example
+## 样例
 
 ```bash
 intersect.exe -i input.txt -o output.txt
